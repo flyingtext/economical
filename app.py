@@ -4,12 +4,15 @@ import os
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask
+from dotenv import load_dotenv
 
 from routes.data import bp as data_bp
 from services.data_ingestion import cache_series, fetch_series
 
 app = Flask(__name__)
 app.register_blueprint(data_bp)
+
+load_dotenv()
 
 SOURCE_URL = os.environ.get("SERIES_SOURCE", "https://example.com/api")
 SYMBOL = os.environ.get("SERIES_SYMBOL", "demo")
