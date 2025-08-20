@@ -1,4 +1,4 @@
-# Economical Data Service
+# Economical
 
 This project has evolved into a small **financial model playground** built
 with Flask and a minimal HTML front‑end. It demonstrates a complete
