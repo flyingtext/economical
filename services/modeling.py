@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Dict, Tuple
 
@@ -7,6 +8,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from statsmodels.tsa.ar_model import AutoReg
+from statsmodels.tsa.api import VAR
 
 
 @dataclass
@@ -67,9 +69,6 @@ def fit_and_validate(df: pd.DataFrame, holdout: int = 5) -> ModelResult:
     )
 
 
-__all__ = ["fit_and_validate", "ModelResult"]
-
-
 def fit_ar_model(series: pd.Series) -> Tuple[Dict[str, float], pd.Series]:
     """Fit an autoregressive (AR(1)) model to a price series.
 
@@ -95,5 +94,100 @@ def fit_ar_model(series: pd.Series) -> Tuple[Dict[str, float], pd.Series]:
     return params, preds
 
 
-__all__.append("fit_ar_model")
+# ---------------------------------------------------------------------------
+# Object oriented models
+
+
+class BaseModel(ABC):
+    """Abstract base class for time series models."""
+
+    @abstractmethod
+    def fit(self, data: pd.Series | pd.DataFrame) -> "BaseModel":
+        """Fit the model to the provided data."""
+
+    @abstractmethod
+    def predict(self, steps: int | None = None) -> pd.Series | pd.DataFrame:
+        """Generate in-sample predictions or out-of-sample forecasts."""
+
+    @property
+    @abstractmethod
+    def params(self) -> Dict[str, float]:
+        """Return model parameters as a dictionary."""
+
+
+class ARModel(BaseModel):
+    """Autoregressive model wrapper using ``statsmodels`` AutoReg."""
+
+    def __init__(self, lags: int = 1) -> None:
+        self.lags = lags
+        self._result = None
+
+    def fit(self, data: pd.Series) -> "ARModel":
+        clean = data.dropna()
+        model = AutoReg(clean, lags=self.lags, old_names=False)
+        self._result = model.fit()
+        return self
+
+    def predict(self, steps: int | None = None) -> pd.Series:
+        if self._result is None:
+            raise RuntimeError("Model must be fit before prediction")
+        preds = self._result.fittedvalues
+        if steps:
+            forecast = self._result.predict(
+                start=len(preds), end=len(preds) + steps - 1
+            )
+            preds = pd.concat([preds, forecast])
+        preds.name = "prediction"
+        return preds
+
+    @property
+    def params(self) -> Dict[str, float]:
+        if self._result is None:
+            return {}
+        return {k: float(v) for k, v in self._result.params.items()}
+
+
+class VARModel(BaseModel):
+    """Vector autoregression model using ``statsmodels`` VAR."""
+
+    def __init__(self, lags: int = 1) -> None:
+        self.lags = lags
+        self._result = None
+        self._index = None
+
+    def fit(self, data: pd.DataFrame) -> "VARModel":
+        clean = data.dropna()
+        model = VAR(clean)
+        self._result = model.fit(self.lags)
+        # fitted values start after ``k_ar`` observations
+        self._index = clean.index[self._result.k_ar :]
+        return self
+
+    def predict(self, steps: int | None = None) -> pd.DataFrame:
+        if self._result is None:
+            raise RuntimeError("Model must be fit before prediction")
+        preds = self._result.fittedvalues
+        preds.index = self._index
+        if steps:
+            forecast = self._result.forecast(self._result.y, steps)
+            forecast_index = pd.RangeIndex(len(self._index), len(self._index) + steps)
+            forecast_df = pd.DataFrame(forecast, columns=preds.columns, index=forecast_index)
+            preds = pd.concat([preds, forecast_df])
+        return preds
+
+    @property
+    def params(self) -> Dict[str, float]:
+        if self._result is None:
+            return {}
+        return {k: float(v) for k, v in self._result.params.items()}
+
+
+__all__ = [
+    "fit_and_validate",
+    "ModelResult",
+    "fit_ar_model",
+    "BaseModel",
+    "ARModel",
+    "VARModel",
+]
 

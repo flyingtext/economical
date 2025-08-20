@@ -13,6 +13,14 @@
       <li>{{ name }}: {{ value }}</li>
     {% endfor %}
     </ul>
+    {% if indicators %}
+    <h2>Indicators</h2>
+    <ul>
+    {% for name, value in indicators.items() %}
+      <li>{{ name }}: {{ value }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
     <p><a href="{{ url_for('model.form') }}">Back</a></p>
   </body>
 </html>
