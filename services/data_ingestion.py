@@ -5,6 +5,7 @@ from typing import Any
 
 import pandas as pd
 import requests
+import yfinance as yf
 
 
 def fetch_series(source: str, symbol: str, start: str, end: str) -> pd.DataFrame:
@@ -36,6 +37,33 @@ def fetch_series(source: str, symbol: str, start: str, end: str) -> pd.DataFrame
     if "date" in df.columns:
         df["date"] = pd.to_datetime(df["date"])
         df = df.set_index("date")
+    return df
+
+
+def fetch_market_data(symbol: str, start: str, end: str | None = None) -> pd.DataFrame:
+    """Fetch market data using the Yahoo Finance API.
+
+    Parameters
+    ----------
+    symbol: str
+        Ticker symbol understood by Yahoo Finance.
+    start: str
+        Start date in ``YYYY-MM-DD`` format.
+    end: str
+        End date in ``YYYY-MM-DD`` format.
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame with a ``value`` column containing the adjusted close
+        prices indexed by date.
+    """
+
+    data = yf.download(symbol, start=start, end=end, progress=False)
+    if data.empty:
+        return pd.DataFrame(columns=["value"])
+    df = data[["Adj Close"]].rename(columns={"Adj Close": "value"})
+    df.index.name = "date"
     return df
 
 

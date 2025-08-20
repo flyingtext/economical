@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Financial Model Playground</title>
+  </head>
+  <body>
+    <h1>Financial Model Playground</h1>
+    <form method="post">
+      <label>Symbol: <input name="symbol" required></label><br>
+      <label>Start Date (YYYY-MM-DD): <input name="start" required></label><br>
+      <label>End Date (YYYY-MM-DD): <input name="end"></label><br>
+      <button type="submit">Run Model</button>
+    </form>
+
+    {% if result %}
+    <h2>Results for {{ symbol }}</h2>
+    <ul>
+      <li>Coefficient: {{ result.coef }}</li>
+      <li>Intercept: {{ result.intercept }}</li>
+      <li>RMSE: {{ result.rmse }}</li>
+    </ul>
+    {% endif %}
+  </body>
+</html>
+

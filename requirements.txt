@@ -4,3 +4,5 @@ pandas
 requests
 pymysql
 python-dotenv
+scikit-learn
+yfinance

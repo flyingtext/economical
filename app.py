@@ -7,10 +7,12 @@ from flask import Flask
 from dotenv import load_dotenv
 
 from routes.data import bp as data_bp
+from routes.model import bp as model_bp
 from services.data_ingestion import cache_series, fetch_series
 
 app = Flask(__name__)
 app.register_blueprint(data_bp)
+app.register_blueprint(model_bp)
 
 load_dotenv()
 
