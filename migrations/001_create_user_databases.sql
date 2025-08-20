@@ -1,4 +1,4 @@
--- Schema for storing per-user database credentials
+-- Initial schema for tracking per-user databases
 CREATE TABLE IF NOT EXISTS user_databases (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
