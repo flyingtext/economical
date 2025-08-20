@@ -100,3 +100,29 @@ def cache_series(series_id: str, df: pd.DataFrame) -> Path:
     file_path = cache_dir / f"{series_id}.json"
     df.to_json(file_path, orient="records", date_format="iso")
     return file_path
+
+
+def build_features(series: pd.Series, options: list[str]) -> pd.DataFrame:
+    """Compute derived indicators for a price series.
+
+    Parameters
+    ----------
+    series:
+        Raw price series.
+    options:
+        List of indicator names to compute. Supported values are
+        ``"moving_average"`` and ``"return"``.
+
+    Returns
+    -------
+    pandas.DataFrame
+        DataFrame containing the original ``value`` column along with any
+        requested indicators.
+    """
+
+    df = pd.DataFrame({"value": series})
+    if "moving_average" in options:
+        df["moving_average"] = series.rolling(window=5).mean()
+    if "return" in options:
+        df["return"] = series.pct_change()
+    return df.dropna()
