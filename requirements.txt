@@ -3,3 +3,4 @@ APScheduler
 pandas
 requests
 pymysql
+python-dotenv
