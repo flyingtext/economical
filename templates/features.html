@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Feature Configurations</title>
+</head>
+<body>
+  <h1>Create Feature Set</h1>
+  <form method="post" action="/features">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="config">Config (JSON):</label>
+    <textarea id="config" name="config" rows="10" cols="60" required>{"operations": []}</textarea>
+
+    <button type="submit">Save</button>
+  </form>
+
+  {% if features %}
+    <h2>Existing Feature Sets</h2>
+    <ul>
+    {% for f in features %}
+      <li>{{ f.name }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+</body>
+</html>
