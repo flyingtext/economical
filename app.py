@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 from routes.data import bp as data_bp
 from routes.model import bp as model_bp
-from services.data_ingestion import cache_series, fetch_series
+from services.data_ingestion import cache_series, fetch_remote_series
 
 app = Flask(__name__)
 app.register_blueprint(data_bp)
@@ -25,7 +25,7 @@ scheduler = BackgroundScheduler()
 
 
 def fetch_and_cache() -> None:
-    df = fetch_series(SOURCE_URL, SYMBOL, START_DATE, END_DATE)
+    df = fetch_remote_series(SOURCE_URL, SYMBOL, START_DATE, END_DATE)
     cache_series(SYMBOL, df)
 
 

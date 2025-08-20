@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+import base64
+import io
+
 from flask import Blueprint, render_template, request
 
-from services.data_ingestion import fetch_market_data
-from services.modeling import fit_and_validate
+import matplotlib.pyplot as plt
+
+from services.data_ingestion import fetch_series
+from services.modeling import fit_ar_model
 
 bp = Blueprint("model", __name__, url_prefix="/model")
 
@@ -23,8 +28,25 @@ def run_model() -> str:
     start = request.form.get("start", "2000-01-01")
     end = request.form.get("end", "")
 
-    df = fetch_market_data(symbol, start, end or None)
-    result = fit_and_validate(df)
+    df = fetch_series(symbol, start, end or None)
+    params, preds = fit_ar_model(df["value"])
 
-    return render_template("model.html", result=result, symbol=symbol)
+    fig, ax = plt.subplots()
+    df["value"].plot(ax=ax, label="Actual")
+    preds.plot(ax=ax, label="Predicted")
+    ax.legend()
+    ax.set_title(symbol)
+
+    buf = io.BytesIO()
+    fig.savefig(buf, format="png")
+    buf.seek(0)
+    plot_data = base64.b64encode(buf.getvalue()).decode("ascii")
+    plt.close(fig)
+
+    return render_template(
+        "model_result.html",
+        symbol=symbol,
+        params=params,
+        plot_data=plot_data,
+    )
 
