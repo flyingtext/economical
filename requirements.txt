@@ -2,3 +2,4 @@ Flask
 APScheduler
 pandas
 requests
+pymysql

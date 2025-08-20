@@ -1,7 +1,12 @@
+from __future__ import annotations
+
 import secrets
+from pathlib import Path
 from typing import Dict, Any
 
 import pymysql
+
+from services.migrations import apply_migrations
 
 
 def register_user_with_database(conn: pymysql.connections.Connection, user_id: int, username: str) -> Dict[str, Any]:
@@ -32,6 +37,9 @@ def register_user_with_database(conn: pymysql.connections.Connection, user_id: i
     db_user = username
     db_password = secrets.token_urlsafe(16)
 
+    migrations_dir = Path(__file__).resolve().parent.parent / "migrations"
+    apply_migrations(conn, migrations_dir)
+
     with conn.cursor() as cur:
         # Create database and user
         cur.execute(f"CREATE DATABASE `{db_name}`;")
@@ -44,19 +52,6 @@ def register_user_with_database(conn: pymysql.connections.Connection, user_id: i
         cur.execute(
             f"GRANT ALL PRIVILEGES ON `{db_name}`.* TO %s@'%%';",
             (db_user,),
-        )
-
-        # Ensure the bookkeeping table exists
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS user_databases (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NOT NULL,
-                db_name VARCHAR(255) NOT NULL,
-                db_user VARCHAR(255) NOT NULL,
-                db_password VARCHAR(255) NOT NULL
-            );
-            """
         )
 
         # Record the generated credentials
