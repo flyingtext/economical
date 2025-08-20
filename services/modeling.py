@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, Tuple
 
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
+from statsmodels.tsa.ar_model import AutoReg
 
 
 @dataclass
@@ -67,4 +68,32 @@ def fit_and_validate(df: pd.DataFrame, holdout: int = 5) -> ModelResult:
 
 
 __all__ = ["fit_and_validate", "ModelResult"]
+
+
+def fit_ar_model(series: pd.Series) -> Tuple[Dict[str, float], pd.Series]:
+    """Fit an autoregressive (AR(1)) model to a price series.
+
+    Parameters
+    ----------
+    series:
+        Time series of prices indexed by date.
+
+    Returns
+    -------
+    Tuple[Dict[str, float], pandas.Series]
+        Dictionary of model parameters and a series of in-sample predictions
+        aligned with the input series index.
+    """
+
+    clean = series.dropna()
+    model = AutoReg(clean, lags=1, old_names=False)
+    fitted = model.fit()
+
+    params = {key: float(val) for key, val in fitted.params.items()}
+    preds = fitted.fittedvalues
+    preds.name = "prediction"
+    return params, preds
+
+
+__all__.append("fit_ar_model")
 

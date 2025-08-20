@@ -6,3 +6,5 @@ pymysql
 python-dotenv
 scikit-learn
 yfinance
+statsmodels
+matplotlib

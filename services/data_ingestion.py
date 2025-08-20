@@ -8,26 +8,38 @@ import requests
 import yfinance as yf
 
 
-def fetch_series(source: str, symbol: str, start: str, end: str) -> pd.DataFrame:
-    """Fetch a time series from a remote source.
+def fetch_series(ticker: str, start: str, end: str | None = None) -> pd.DataFrame:
+    """Retrieve a price series from Yahoo Finance.
 
     Parameters
     ----------
-    source: str
-        Base URL of the data source.
-    symbol: str
-        Identifier of the series.
-    start: str
-        Start date for the requested range in ``YYYY-MM-DD`` format.
-    end: str
-        End date for the requested range in ``YYYY-MM-DD`` format.
+    ticker:
+        Ticker symbol understood by Yahoo Finance.
+    start:
+        Start date in ``YYYY-MM-DD`` format.
+    end:
+        End date in ``YYYY-MM-DD`` format. If ``None`` the latest available
+        date is used.
 
     Returns
     -------
     pandas.DataFrame
-        DataFrame indexed by a ``datetime`` column named ``date`` with a
-        ``value`` column.
+        DataFrame indexed by ``date`` with a ``value`` column containing the
+        adjusted close prices.
     """
+
+    data = yf.download(ticker, start=start, end=end, progress=False)
+    if data.empty:
+        return pd.DataFrame(columns=["value"])
+    price_col = "Adj Close" if "Adj Close" in data.columns else "Close"
+    df = data[[price_col]].rename(columns={price_col: "value"})
+    df.index.name = "date"
+    return df
+
+
+def fetch_remote_series(source: str, symbol: str, start: str, end: str) -> pd.DataFrame:
+    """Fetch a time series from a generic remote JSON source."""
+
     url = f"{source.rstrip('/')}/{symbol}"
     params = {"start": start, "end": end}
     response = requests.get(url, params=params, timeout=30)
@@ -62,7 +74,8 @@ def fetch_market_data(symbol: str, start: str, end: str | None = None) -> pd.Dat
     data = yf.download(symbol, start=start, end=end, progress=False)
     if data.empty:
         return pd.DataFrame(columns=["value"])
-    df = data[["Adj Close"]].rename(columns={"Adj Close": "value"})
+    price_col = "Adj Close" if "Adj Close" in data.columns else "Close"
+    df = data[[price_col]].rename(columns={price_col: "value"})
     df.index.name = "date"
     return df
 
