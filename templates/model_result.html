@@ -5,14 +5,15 @@
     <title>Model Result</title>
   </head>
   <body>
-    <nav>
+    <nav aria-label="Main navigation">
       <a href="{{ url_for('categories.index') }}">Categories</a>
       {% if category_url %}
       <a href="{{ category_url }}">See Category</a>
       {% endif %}
     </nav>
+    <main>
     <h1>Results for {{ symbol }}</h1>
-    <img src="data:image/png;base64,{{ plot_data }}" alt="Actual vs Predicted">
+    <img src="data:image/png;base64,{{ plot_data }}" alt="Actual vs Predicted chart">
     <h2>Parameters</h2>
     <ul>
     {% for name, value in params.items() %}
@@ -28,5 +29,6 @@
     </ul>
     {% endif %}
     <p><a href="{{ url_for('model.form') }}">Back</a></p>
+    </main>
   </body>
 </html>

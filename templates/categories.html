@@ -5,52 +5,59 @@
     <title>Categories</title>
   </head>
   <body>
-    <h1>Categories</h1>
-    
-    <div id="controls">
-      <input type="text" id="search" placeholder="Search categories..." />
-      <div id="filters">
-        {% for level in categories | map(attribute='adaptability') | unique %}
-          <label>
-            <input type="checkbox" class="filter-checkbox" value="{{ level }}" />
-            {{ level }}
-          </label>
-        {% endfor %}
-      </div>
-    </div>
-    {% for category in categories %}
-      <section id="{{ category.name|lower|replace(' ', '-') }}">
-        <h2>{{ category.name }}</h2>
-        <p>{{ category.description }}</p>
-        <h3>Deterministic Models</h3>
-        <ul>
-          {% for model in category.deterministic_examples %}
-            <li id="{{ model|lower|replace(' ', '-') }}">
-              {{ model }}
-              {% if category.links and model in category.links %}
-                {% set href = category.links[model] %}
-                {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
-                <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
-              {% endif %}
-            </li>
+    <nav aria-label="Main navigation">
+      <a href="{{ url_for('model.form') }}">Model Playground</a>
+    </nav>
+    <main>
+      <h1>Categories</h1>
+
+      <form id="controls" role="search" aria-label="Category filters">
+        <label for="search">Search categories</label>
+        <input type="text" id="search" placeholder="Search categories..." />
+        <fieldset id="filters">
+          <legend>Filter by adaptability</legend>
+          {% for level in categories | map(attribute='adaptability') | unique %}
+            <label>
+              <input type="checkbox" class="filter-checkbox" value="{{ level }}" />
+              {{ level }}
+            </label>
           {% endfor %}
-        </ul>
-        <h3>Stochastic Models</h3>
-        <ul>
-          {% for model in category.stochastic_examples %}
-            <li id="{{ model|lower|replace(' ', '-') }}">
-              {{ model }}
-              {% if category.links and model in category.links %}
-                {% set href = category.links[model] %}
-                {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
-                <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </section>
-    {% endfor %}
-    </div>
+        </fieldset>
+      </form>
+      {% for category in categories %}
+        <section id="{{ category.name|lower|replace(' ', '-') }}" class="category-card" data-adaptability="{{ category.adaptability }}">
+          <h2>{{ category.name }}</h2>
+          <img src="{{ url_for('static', filename='icons/' + category.name|lower|replace(' ', '-') + '.svg') }}" alt="{{ category.name }} icon" onerror="this.style.display='none'">
+          <p>{{ category.description }}</p>
+          <h3>Deterministic Models</h3>
+          <ul>
+            {% for model in category.deterministic_examples %}
+              <li id="{{ model|lower|replace(' ', '-') }}">
+                {{ model }}
+                {% if category.links and model in category.links %}
+                  {% set href = category.links[model] %}
+                  {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
+                  <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+          <h3>Stochastic Models</h3>
+          <ul>
+            {% for model in category.stochastic_examples %}
+              <li id="{{ model|lower|replace(' ', '-') }}">
+                {{ model }}
+                {% if category.links and model in category.links %}
+                  {% set href = category.links[model] %}
+                  {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
+                  <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endfor %}
+    </main>
 
     <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
 

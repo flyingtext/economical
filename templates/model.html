@@ -5,9 +5,10 @@
     <title>Financial Model Playground</title>
   </head>
   <body>
-    <nav>
+    <nav aria-label="Main navigation">
       <a href="{{ url_for('categories.index') }}">Categories</a>
     </nav>
+    <main>
     <h1>Financial Model Playground</h1>
     <form method="post">
       <label>Symbol: <input name="symbol" required></label><br>
@@ -26,6 +27,7 @@
       </fieldset>
       <button type="submit">Run Model</button>
     </form>
+    </main>
   </body>
 </html>
 

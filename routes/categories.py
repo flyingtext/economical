@@ -45,6 +45,33 @@ CATEGORIES: Dict[str, Category] = {
             "stock price simulation": "/categories/economics#gdp-growth",
         },
     },
+    "statistics": {
+        "name": "Statistics",
+        "description": "General statistical tools used across domains.",
+        "deterministic_examples": ["linear regression", "hypothesis testing"],
+        "stochastic_examples": ["monte carlo methods", "bootstrap"],
+        "adaptability": "High",
+        "related_categories": ["economics", "machine-learning"],
+        "links": {},
+    },
+    "machine-learning": {
+        "name": "Machine Learning",
+        "description": "Data-driven algorithms for pattern finding and prediction.",
+        "deterministic_examples": ["decision tree", "support vector machine"],
+        "stochastic_examples": ["random forest", "neural network"],
+        "adaptability": "High",
+        "related_categories": ["statistics", "optimization"],
+        "links": {},
+    },
+    "optimization": {
+        "name": "Optimization",
+        "description": "Approaches for selecting best outcomes under constraints.",
+        "deterministic_examples": ["linear programming", "gradient descent"],
+        "stochastic_examples": ["simulated annealing", "genetic algorithms"],
+        "adaptability": "Low",
+        "related_categories": ["machine-learning"],
+        "links": {},
+    },
 }
 
 
