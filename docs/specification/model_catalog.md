@@ -3,8 +3,8 @@
 ## 1. Overview
 
 * **Location**: Models → Model Catalog
-* **Purpose**: Centralized catalog of models, allowing users to browse their own models, team models, and public models.
-* **Primary Users**: Researchers, analysts, teams, and general community members
+* **Purpose**: Centralized catalog of models, allowing users to browse, search, filter, and clone models (own/team/public) into their workspace.
+* **Primary Users**: Researchers, analysts, teams, and community members (contributors & viewers)
 
 ---
 
@@ -12,44 +12,45 @@
 
 1. **Tabbed Views**
 
-   * **My Models**: Models created or owned by the logged-in user
+   * **My Models**: Models created or cloned by the logged-in user
    * **Team Models**: Models shared within the user’s teams
    * **Public Models**: All publicly shared models across the platform
 
 2. **List/Grid View Toggle**
 
-   * Default list view, with option to switch to grid (card) view
-   * Each entry displays both metadata and execution status
+   * Default: list view
+   * Option: grid (card) view
+   * Each entry displays metadata, execution state, and quick actions
 
 3. **Model Showcase Status (inline on list level)**
 
-   * **Execution State**: (Idle, Running, Completed, Failed)
-   * **Benchmark Level Reached**: (Baseline, Advanced, Published)
-   * **Progress %**: e.g., fitting or solving progress bar
-   * **Validation Status**: (Repeated validation runs, Pass/Fail metrics)
-   * **Prediction Status**: (Next scheduled prediction, last prediction outcome)
+   * **Execution State**: Idle / Running / Completed / Failed
+   * **Benchmark Level Reached**: Baseline / Advanced / Published
+   * **Progress %**: fitting/solving progress bar
+   * **Validation Status**: repeated runs, pass/fail metrics
+   * **Prediction Status**: next scheduled prediction, last prediction outcome
 
 4. **Model Summary Card/List Item**
 
    * Model name + version
-   * Core algorithm/methodology (e.g., ARIMA, PDE Solver, Agent-based model)
+   * Core algorithm/methodology (ARIMA, PDE Solver, Agent-based, etc.)
    * Linked datasets (count or preview list)
    * Key metrics (R², RMSE, AIC, etc.)
-   * Showcase status block (execution/validation/prediction info)
+   * Showcase status (execution/validation/prediction info)
    * Creator and team info
    * Community metrics (likes, comments, shares)
-   * Updated timestamp (last run / last modified)
+   * Updated timestamp (last run / modified)
 
 5. **Search & Filter**
 
-   * Global search across model name, tags, algorithms
+   * Search across model name, tags, algorithms
    * Filters:
 
      * Model type (PDE, ODE, Time-series, Agent-based, etc.)
      * Execution state (Running, Completed, Failed)
      * Visibility (My / Team / Public)
      * Validation status (Validated, In-progress, Not validated)
-     * Tags (e.g., finance, epidemiology, climate)
+     * Tags (finance, epidemiology, climate, etc.)
 
 6. **Sorting Options**
 
@@ -60,10 +61,18 @@
 
 7. **Quick Actions**
 
-   * “View Detail” (go to Model Detail page)
-   * “Run Again” (if user has execution rights)
-   * “Export” (download or Zenodo publish if available)
-   * “Favorite” (bookmarking)
+   * **View Detail** → opens Model Detail
+
+   * **Run Again** → re-run model (if user has rights)
+
+   * **Export** → download results or publish to Zenodo
+
+   * **Favorite** → bookmark model
+
+   * **Clone** → copy model into user’s workspace (personal/team)
+
+   > ✅ **Clone** opens **Model Builder** with pre-filled values.
+   > Datasets are referenced, not duplicated (user may re-import/replace).
 
 ---
 
@@ -77,24 +86,24 @@
 * Sort dropdown
 * Filter button
 
-### Main Content (List View)
+### Main Content (List/Grid)
 
 * Each row/card includes:
 
-  * Thumbnail (optional visualization snapshot)
-  * **Model Name + Version**
+  * Thumbnail (optional snapshot/preview)
+  * Model Name + Version
   * Algorithm / Method
-  * Showcase Status (execution state, progress bar, validation, prediction)
+  * Showcase status (execution, validation, prediction info)
   * Linked Datasets
   * Metrics overview (quick stats)
   * Community metrics (likes, comments, shares)
-  * Quick Actions (buttons: View, Run, Export, Favorite)
+  * Quick Actions (View, Run, Export, Favorite, Clone)
 
 ### Right Sidebar (optional)
 
-* **Quick Filters** (execution state, validation status, model type)
-* **Recently Viewed Models**
-* **Zenodo Publication Shortcuts** (if applicable)
+* Quick Filters (execution state, validation, model type)
+* Recently Viewed Models
+* Zenodo Publication Shortcuts
 
 ---
 
@@ -120,14 +129,16 @@
 | comments\_count    | int       | Comments                                          |
 | shares\_count      | int       | Shares                                            |
 | updated\_at        | datetime  | Last update                                       |
+| is\_favorited      | boolean   | Whether user favorited this model                 |
+| can\_clone         | boolean   | User permission flag for Clone action             |
 
 ---
 
 ## 5. Permissions
 
-* **Viewer** – can browse public models
-* **Contributor** – can edit, run, delete, or export models they own and contribute to team models
-* **Owner** – full control over owned models, including visibility and publication management
+* **Viewer** – can browse Public Models (no run/export/clone)
+* **Contributor** – can create new models and clone public/team models; run/export models they own
+* **Owner** – full control over owned models, including visibility & publication
 * **Admin** – manage all models across the platform
 
 ---
@@ -135,8 +146,10 @@
 ## 6. Example User Flow
 
 1. User enters **Model Catalog** page
-2. Chooses tab: *My Models / Team Models / Public Models*
-3. Uses filters (e.g., only Running models, PDE type)
-4. Sees list with execution/validation/prediction status inline
-5. Clicks a model → goes to Model Detail
-6. Optionally runs model again or exports results
+2. Chooses tab (My / Team / Public)
+3. Applies filters (e.g., Running models, PDE type)
+4. Sees list with inline execution/validation/prediction info
+5. Clicks “View Detail” → opens Model Detail
+6. Or clicks “Clone” → opens Model Builder with pre-filled data
+7. Optionally runs model or exports results
+
