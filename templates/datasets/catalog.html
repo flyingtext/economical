@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Dataset Catalog</h1>
-<p>List of datasets will appear here.</p>
+<div id="dataset-list" class="grid gap-4"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/datasets.js') }}"></script>
 {% endblock %}

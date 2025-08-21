@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Dashboard Catalog</h1>
-<p>List of dashboards will appear here.</p>
+<div id="dashboard-list" class="grid gap-4"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboards.js') }}"></script>
 {% endblock %}

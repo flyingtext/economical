@@ -79,6 +79,17 @@ def projects_connect():
         emit("error", {"message": "project_id required"})
 
 
+@socketio.on("connect", namespace="/ws/dashboards")
+def dashboards_connect():
+    """Join a room for a specific dashboard."""
+    dashboard_id = request.args.get("dashboard_id")
+    if dashboard_id:
+        join_room(dashboard_id)
+        emit("dashboard_update", {"message": f"joined dashboard {dashboard_id}"})
+    else:
+        emit("error", {"message": "dashboard_id required"})
+
+
 # Server-side emit helpers -------------------------------------------------
 
 def emit_notification(message: str) -> None:
@@ -111,4 +122,11 @@ def emit_project_update(project_id: int, payload: dict) -> None:
     """Emit an update for a project room."""
     socketio.emit(
         "project_update", payload, namespace="/ws/projects", room=str(project_id)
+    )
+
+
+def emit_dashboard_update(dashboard_id: int, payload: dict) -> None:
+    """Emit an update for a dashboard room."""
+    socketio.emit(
+        "dashboard_update", payload, namespace="/ws/dashboards", room=str(dashboard_id)
     )
