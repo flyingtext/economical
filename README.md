@@ -159,8 +159,14 @@ We welcome contributions! Please check:
 
 **JiHyeon Yoon (윤지현)**
 
-* ✉️ Email: [somehowme@gmail.com](mailto:somehowme@gmail.com) / [flyingtext@nate.com](mailto:flyingtext@nate.com) / [flyingtext@hotmail.com](mailto:flyingtext@hotmail.com)
+* ✉️ [somehowme@gmail.com](mailto:somehowme@gmail.com) / [flyingtext@nate.com](mailto:flyingtext@nate.com) / [flyingtext@hotmail.com](mailto:flyingtext@hotmail.com)
 * 🌐 GitHub: [flyingtext](https://github.com/flyingtext)
 * 📝 Blog: [j.writings.cloud](https://j.writings.cloud) / [k.writings.cloud](https://k.writings.cloud)
 * 🧾 ORCID: [0000-0001-9610-0994](https://orcid.org/0000-0001-9610-0994)
+
+**Development Notes**
+
+* Project lead & system design by JiHyeon Yoon
+* Built with: Python, React, Tailwind, Flask/FastAPI
+* Assisted by: OpenAI ChatGPT & Codex (prompt-driven development support)
 
