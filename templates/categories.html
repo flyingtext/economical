@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Categories</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   </head>
   <body>
     <h1>Categories</h1>
@@ -18,8 +19,9 @@
         {% endfor %}
       </div>
     </div>
+    <div class="card-container">
     {% for category in categories %}
-      <section id="{{ category.name|lower|replace(' ', '-') }}">
+      <section class="card" id="{{ category.name|lower|replace(' ', '-') }}">
         <h2>{{ category.name }}</h2>
         <p>{{ category.description }}</p>
         <h3>Deterministic Models</h3>
