@@ -4,6 +4,7 @@ import base64
 import io
 
 from flask import Blueprint, render_template, request, url_for
+from ws import emit_model_update
 
 import matplotlib.pyplot as plt
 
@@ -67,7 +68,8 @@ def run_model() -> str:
         if not features.empty
         else {}
     )
-
+    
+    emit_model_update(model_type, {"message": f"model run for {symbol}"})
     return render_template(
         "model_result.html",
         symbol=symbol,
