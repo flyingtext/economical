@@ -6,23 +6,39 @@
   </head>
   <body>
     <h1>Categories</h1>
-    {% for category in categories %}
-      <section>
-        <h2>{{ category.name }}</h2>
-        <p>{{ category.description }}</p>
-        <h3>Deterministic Models</h3>
-        <ul>
-          {% for model in category.deterministic_examples %}
-            <li>{{ model }}</li>
-          {% endfor %}
-        </ul>
-        <h3>Stochastic Models</h3>
-        <ul>
-          {% for model in category.stochastic_examples %}
-            <li>{{ model }}</li>
-          {% endfor %}
-        </ul>
-      </section>
-    {% endfor %}
+    <div id="controls">
+      <input type="text" id="search" placeholder="Search categories..." />
+      <div id="filters">
+        {% for level in categories | map(attribute='adaptability') | unique %}
+          <label>
+            <input type="checkbox" class="filter-checkbox" value="{{ level }}" />
+            {{ level }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div id="category-container">
+      {% for category in categories %}
+        <section class="category-card" data-adaptability="{{ category.adaptability }}">
+          <h2>{{ category.name }}</h2>
+          <p>{{ category.description }}</p>
+          <h3>Deterministic Models</h3>
+          <ul>
+            {% for model in category.deterministic_examples %}
+              <li>{{ model }}</li>
+            {% endfor %}
+          </ul>
+          <h3>Stochastic Models</h3>
+          <ul>
+            {% for model in category.stochastic_examples %}
+              <li>{{ model }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
   </body>
 </html>
