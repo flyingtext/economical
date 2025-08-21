@@ -19,6 +19,10 @@ from routes.notifications import bp as notifications_bp
 from routes.admin import bp as admin_bp
 from services.data_ingestion import cache_series, fetch_remote_series
 from ws import init_app as init_ws, socketio
+from models.db import Base, engine
+
+# Ensure tables exist
+Base.metadata.create_all(bind=engine)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev")

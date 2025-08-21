@@ -9,3 +9,5 @@ yfinance
 statsmodels
 matplotlib
 Flask-SocketIO
+SQLAlchemy
+alembic
