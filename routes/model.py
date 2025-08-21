@@ -3,7 +3,7 @@ from __future__ import annotations
 import base64
 import io
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, url_for
 
 import matplotlib.pyplot as plt
 
@@ -29,6 +29,14 @@ def run_model() -> str:
     end = request.form.get("end", "")
     model_type = request.form.get("model_type", "ar")
     indicator_opts = request.form.getlist("indicators")
+
+    category_map = {"ar": "time-series", "var": "time-series"}
+    category_slug = category_map.get(model_type)
+    category_url = (
+        url_for("categories.anchor", subpath=category_slug)
+        if category_slug
+        else url_for("categories.index")
+    )
 
     df = fetch_series(symbol, start, end or None)
     features = build_features(df["value"], indicator_opts)
@@ -66,5 +74,6 @@ def run_model() -> str:
         params=model.params,
         indicators=latest_indicators,
         plot_data=plot_data,
+        category_url=category_url,
     )
 
