@@ -1,4 +1,4 @@
-# Economical Sitemap (v4, with Model CRUD)
+# Economical Sitemap (v9, full CRUD for core entities, simplified Community)
 
 ## 1. Auth / Account
 - Login
@@ -25,16 +25,24 @@
 
 ## 3. Datasets
 - Dataset Catalog
+- Dataset Builder (Create / Edit)
+  - Basic Info (name, description, tags, visibility)
+  - Schema Definition (columns, types, units)
+  - Source & Citation (BibTeX, URL, upload log)
+  - Data Upload & Import (CSV, JSON, API binding)
+  - Versions & Update Management
+  - Access Permissions
+  - Save Draft / Publish
 - Dataset Detail
   - Overview
-  - Schema (columns/types/units)
-  - Source & Citation (BibTeX / URL + update log)
+  - Schema
+  - Source & Citation
   - Versions & Update Logs
   - Usage & Statistics
-  - Community (comments, likes, ratings)
+  - Community
   - API Access
   - Related Models
-  - Publication History (Zenodo DOIs of dataset exports)
+  - Publication History (Zenodo DOIs)
 
 ---
 
@@ -48,41 +56,64 @@
   - Model Type & Structure (PDE, ODE, Time-series, Agent-based, etc.)
   - Linked Datasets
   - Parameters & Constraints
-  - Execution Settings (solver, tolerance, compute environment)
+  - Execution Settings
   - Validation / Backtesting Template Selection
   - Save Draft / Publish
 - Model Detail
   - Overview
   - Fitting & Solving Results
   - Validation / Backtesting Reports
-  - Prediction Schedules (cron jobs)
+  - Prediction Schedules
   - Scenario Comparison
   - Versions & Update Logs
   - Community
   - API Access
   - Related Datasets
-  - Publication History (Zenodo DOIs of model reports)
+  - Publication History (Zenodo DOIs)
 
 ---
 
 ## 5. Projects
-- My Projects
+- Project Catalog
+  - My Projects
+  - Team Projects
+  - Public Projects
+- Project Builder (Create / Edit)
+  - Basic Info
+  - Linked Models
+  - Linked Datasets
+  - Team Members & Roles
+  - Resource & Execution Settings
+  - Validation / Publication Templates
+  - Save Draft / Publish
 - Project Detail
+  - Overview
   - Linked Models
   - Linked Datasets
   - Team Members
   - Activity Logs
-  - Publication History (Zenodo DOIs at project level)
+  - Publication History (Zenodo DOIs)
 
 ---
 
 ## 6. Dashboards
-- My Dashboards
-- Shared Dashboards
-- Dashboard Detail
+- Dashboard Catalog
+  - My Dashboards
+  - Team Dashboards
+  - Public Dashboards
+- Dashboard Builder (Create / Edit)
+  - Basic Info
   - Layout Editor
-  - Widgets
+  - Widgets (charts, tables, maps, KPIs)
+  - Data Binding (datasets, model outputs)
   - Sharing & Permissions
+  - Save Draft / Publish
+- Dashboard Detail
+  - Overview
+  - Layout View
+  - Widgets in Action
+  - Team & Sharing Permissions
+  - Activity Logs
 
 ---
 
@@ -97,9 +128,7 @@
 ## 8. Community
 - Global Feed
 - Discussions (threads, topics)
-- Dataset Discussions
-- Model Discussions
-- Dashboard Sharing
+- Posts (Create / Edit / Delete / Comment / Like / Share)
 - My Community Activity
   - Personal (posts/comments/likes/ratings)
   - Team (posts/comments/likes/ratings)
@@ -111,8 +140,10 @@
 - Team Management
 - Dataset Management
 - Model Management
+- Project Management
+- Dashboard Management
 - Community Management
-- Zenodo Publication Management ✅ (monitor uploads, failures, re-sync DOIs)
+- Zenodo Publication Management ✅
 - System Logs
 - Database Status
 - Resource Credits
