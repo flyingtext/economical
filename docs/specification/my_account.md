@@ -1,132 +1,122 @@
-# ⚙️ My Account Page Specification (with Tabs)
+# My Account — Screen Definition
 
-## Purpose
-Provide users with a centralized hub to manage their personal profile, security, preferences, data exports, and credit usage.
-
----
-
-## Layout
-
-### Navigation
-- **Top Bar**: [Economical Logo] + [Main Navigation]
-- **Page Title**: "My Account"
-- **Tab Navigation (horizontal or sidebar)**:
-  - Profile
-  - Security
-  - Preferences
-  - Backup & Export
-  - Credits & Usage
+## 1. Screen Purpose
+The **My Account** section centralizes personal account management.  
+It provides access to user profile, security settings, preferences, export logs, and publication history.  
 
 ---
 
-## Tabs
+## 2. Layout Components
 
-### 1. Profile Tab
-- **Fields**
-  - Full Name (editable)
-  - Email (read-only, with verification badge)
-  - Contact Info (phone, secondary email)
-  - Profile Picture (upload/change)
-  - Current Role: **Owner / Admin / Member / Viewer** (read-only, inherited from team settings)
+### (A) Navigation Tabs
+- Profile  
+- Security  
+- Preferences  
+- Exports & Backups  
+- Publication History  
+
+---
+
+## 3. Sub-Screens
+
+### 3.1 Profile
+- **Profile Info**
+  - Name
+  - Email (primary, verified/unverified)
+  - Affiliation / Institution
+  - Role (User / Researcher / Admin, etc.)
+  - Profile Picture
 - **Actions**
-  - Save Changes
-- **States**
-  - Success banner: "Profile updated"
-  - Error banner for invalid inputs
+  - [Edit Profile]  
+  - [Change Picture]  
+  - [Delete Account] (with warning modal)
 
 ---
 
-### 2. Security Tab
-- **Sections**
-  - Change Password
-    - Current password, new password, confirm password
-  - Active Sessions
-    - List of sessions (device, location, last login)
-    - "Logout from this device" / "Logout from all devices"
-  - API Keys
-    - List of keys (masked, last 4 chars visible)
-    - Generate new key
-    - Revoke existing key
-- **Notes**
-  - All sensitive actions require re-authentication
+### 3.2 Security
+- **Authentication**
+  - Change Password  
+  - Two-Factor Authentication (2FA) toggle (App/Email)  
+  - Recent Login History (device, IP, date)  
+- **Sessions**
+  - List of active sessions  
+  - Option to revoke sessions  
 
 ---
 
-### 3. Preferences Tab
-- **Options**
-  - Language & Locale (dropdown)
-  - Default Currency (USD, KRW, JPY, etc.)
-  - Number Notation (1,000 vs 1.000 vs 1’000)
-  - Notifications
-    - Email notifications (on/off)
-    - In-app/WebSocket notifications (toggle per category)
+### 3.3 Preferences
+- **UI Settings**
+  - Language  
+  - Timezone  
+  - Theme (Light / Dark / Auto)  
+- **Notification Settings**
+  - Email alerts  
+  - In-app notifications (datasets, models, community)  
+- **Data Preferences**
+  - Default export format (CSV/JSON/Parquet)  
+  - Default chart display options  
+
+---
+
+### 3.4 Exports & Backups
+- **Purpose**: Track and manage dataset/model export requests.  
+- **Export History Table**
+  - Export ID  
+  - Dataset / Model Name  
+  - Format (CSV / JSON / Parquet)  
+  - Range (full dataset, time window, subset)  
+  - Requested At (timestamp)  
+  - Status (Processing / Completed / Failed)  
+  - Delivery (email sent Y/N)  
+  - [Download Link] (if completed, with expiration notice)
+- **Backups**
+  - Scheduled personal backups (if enabled)  
+  - Manual backup trigger [Request Backup]  
 - **Actions**
-  - Save Preferences
+  - Retry failed export  
+  - Cancel export (if still processing)  
 
 ---
 
-### 4. Backup & Export Tab
-- **Features**
-  - Export request (Models / Datasets / Showcases)
-  - Status: Pending / Completed
-  - Download links (expire after 24h)
-  - Export history list (timestamp, type, status)
-- **Process**
-  - Export runs as batch job
-  - User receives email with download link
+### 3.5 Publication History
+- **Purpose**: List of Zenodo publications created by this user.  
+- **Table Fields**
+  - DOI  
+  - Title  
+  - Linked Resource (Dataset / Model / Project)  
+  - Published At (timestamp)  
+  - Status (Published / Failed / Re-sync Pending)  
+  - [View on Zenodo] link  
+- **Actions**
+  - Retry sync (if DOI failed to register)  
+  - Export citation  
 
 ---
 
-### 5. Credits & Usage Tab
-- **Overview**
-  - Current Credit Balance
-  - Monthly Usage Summary
-- **History**
-  - Contribution Credits (earned from dataset sharing, feedback, model publishing)
-  - Spending Credits (model runs, dataset queries, API usage)
-- **Charts**
-  - Line graph of monthly balance
-  - Table of detailed transactions
+## 4. Modals
+
+### Profile Edit Modal
+- Update name, affiliation, profile picture  
+
+### Export Detail Modal
+- Show full configuration of past export (format, range, delivery info)  
+
+### Backup Confirmation Modal
+- Trigger manual backup → confirmation before job starts  
 
 ---
 
-## Example Wireframe (Text-based)
-
-```
-
----
-
-| \[Economical Logo]        My Account                        |                 |             |        |
-| ----------------------------------------------------------- | --------------- | ----------- | ------ |
-| Tabs: Profile                                               | Security        | Preferences | Backup |
-| & Export                                                    | Credits & Usage |             |        |
-| -------------------------------------------------           |                 |             |        |
-| \[Active Tab Content]                                       |                 |             |        |
-|                                                             |                 |             |        |
-| Example: Profile Tab                                        |                 |             |        |
-| Name:  \[\_\_\_\_\_\_\_\_\_\_\_]                            |                 |             |        |
-| Email: [user@email.com](mailto:user@email.com) (✓ Verified) |                 |             |        |
-| Phone: \[\_\_\_\_\_\_\_\_\_\_\_]                            |                 |             |        |
-| Picture: \[Upload]                                          |                 |             |        |
-| Role: Member (Read-only)                                    |                 |             |        |
-| \[ Save Changes ]                                           |                 |             |        |
+## 5. Key Features
+1. **Unified Account Control** — All personal settings centralized.  
+2. **Security & Transparency** — Passwords, 2FA, session control, login history.  
+3. **Customization** — Language, timezone, theme, and notification preferences.  
+4. **Export Management** — Track dataset/model exports, with logs and delivery status.  
+5. **Publication Tracking** — Personal Zenodo upload history, sync status, DOI references.  
 
 ---
 
-```
-
----
-
-## Accessibility
-- Tabs navigable via keyboard
-- Clear ARIA roles for tab panels
-- Screen reader announces active tab
-- High-contrast friendly design
-
----
-
-## Security
-- All updates via HTTPS
-- Password/API key updates require re-authentication
-- Export/download links expire after 24h
-- Sensitive data never shown in plain text
+## 6. Navigation Flow
+- Accessible from global header → [My Account]  
+- Within My Account, user navigates via sub-tabs  
+- Export requests from Dataset/Model pages are logged here automatically  
+- Publications created through [Publish to Zenodo] are tracked here automatically  
