@@ -1,4 +1,4 @@
-# Economical Sitemap (v4)
+# Economical Sitemap (v4, with Model CRUD)
 
 ## 1. Auth / Account
 - Login
@@ -10,6 +10,8 @@
   - Preferences
   - Exports & Backups
   - Publication History (My Zenodo Uploads)
+
+---
 
 ## 2. Team Settings
 - General Info
@@ -38,6 +40,17 @@
 
 ## 4. Models
 - Model Catalog
+  - My Models
+  - Team Models
+  - Public Models
+- Model Builder (Create / Edit)
+  - Basic Info
+  - Model Type & Structure (PDE, ODE, Time-series, Agent-based, etc.)
+  - Linked Datasets
+  - Parameters & Constraints
+  - Execution Settings (solver, tolerance, compute environment)
+  - Validation / Backtesting Template Selection
+  - Save Draft / Publish
 - Model Detail
   - Overview
   - Fitting & Solving Results
@@ -77,7 +90,7 @@
 - Map Explorer
 - Dataset Visualization on Map
 - Model Outputs Visualization
-- Locale-based real-time view
+- Locale-based Real-time View
 
 ---
 
