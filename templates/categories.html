@@ -6,6 +6,18 @@
   </head>
   <body>
     <h1>Categories</h1>
+    
+    <div id="controls">
+      <input type="text" id="search" placeholder="Search categories..." />
+      <div id="filters">
+        {% for level in categories | map(attribute='adaptability') | unique %}
+          <label>
+            <input type="checkbox" class="filter-checkbox" value="{{ level }}" />
+            {{ level }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
     {% for category in categories %}
       <section id="{{ category.name|lower|replace(' ', '-') }}">
         <h2>{{ category.name }}</h2>
@@ -38,5 +50,9 @@
         </ul>
       </section>
     {% endfor %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
+
   </body>
 </html>
