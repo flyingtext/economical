@@ -1,0 +1,21 @@
+{
+  "title": "Economical: An open-source platform for economic and financial modeling",
+  "upload_type": "software",
+  "description": "Economical is an open-source research platform for building, validating, and publishing economic and financial models. It provides an end-to-end workflow from model fitting & solving → backtesting → publication to Zenodo (DOI issued), with dataset management and collaborative features.",
+  "creators": [
+    {
+      "name": "Yoon, JiHyeon",
+      "affiliation": "Economical Project",
+      "orcid": "0000-0001-9610-0994"
+    }
+  ],
+  "keywords": [
+    "economics",
+    "finance",
+    "modeling",
+    "reproducible research",
+    "simulation",
+    "open source"
+  ],
+  "license": "MIT"
+}
