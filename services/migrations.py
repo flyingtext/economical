@@ -4,12 +4,20 @@ from pathlib import Path
 
 import pymysql
 
+from services.erd import apply_erd_schema
 
-def apply_migrations(conn: pymysql.connections.Connection, migrations_dir: Path) -> None:
-    """Apply SQL migrations located in ``migrations_dir``.
 
-    Each ``.sql`` file is executed once and tracked in the ``schema_migrations``
-    table. Files are processed in alphabetical order.
+def apply_migrations(
+    conn: pymysql.connections.Connection,
+    migrations_dir: Path,
+    erd_path: Path | None = None,
+) -> None:
+    """Apply SQL migrations and optionally ensure ERD tables exist.
+
+    Each ``.sql`` file in ``migrations_dir`` is executed once and tracked in the
+    ``schema_migrations`` table. Files are processed in alphabetical order.
+    If ``erd_path`` is provided, tables defined in the ERD are created after
+    applying file-based migrations.
     """
     migrations_dir = migrations_dir.resolve()
     with conn.cursor() as cur:
@@ -35,4 +43,8 @@ def apply_migrations(conn: pymysql.connections.Connection, migrations_dir: Path)
                 "INSERT INTO schema_migrations (version) VALUES (%s)",
                 (version,),
             )
+
     conn.commit()
+
+    if erd_path is not None:
+        apply_erd_schema(conn, erd_path)
