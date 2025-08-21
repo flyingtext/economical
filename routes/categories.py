@@ -6,6 +6,7 @@ This module defines static category information that can be imported from
 routes and templates without executing any I/O on import.
 """
 
+from flask import Blueprint, render_template
 from typing import Dict, List, TypedDict
 
 
@@ -44,3 +45,13 @@ def get_categories() -> List[Category]:
     """Return all category definitions."""
 
     return list(CATEGORIES.values())
+
+
+bp = Blueprint("categories", __name__, url_prefix="/categories")
+
+
+@bp.get("/")
+def index() -> str:
+    """Render the categories page."""
+
+    return render_template("categories.html", categories=get_categories())
