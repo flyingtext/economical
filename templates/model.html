@@ -1,31 +1,25 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Financial Model Playground</title>
-  </head>
-  <body>
-    <nav>
-      <a href="{{ url_for('categories.index') }}">Categories</a>
-    </nav>
-    <h1>Financial Model Playground</h1>
-    <form method="post">
-      <label>Symbol: <input name="symbol" required></label><br>
-      <label>Start Date (YYYY-MM-DD): <input name="start" required></label><br>
-      <label>End Date (YYYY-MM-DD): <input name="end"></label><br>
-      <label>Model Type:
-        <select name="model_type">
-          <option value="ar">AR</option>
-          <option value="var">VAR</option>
-        </select>
-      </label><br>
-      <fieldset>
-        <legend>Indicators</legend>
-        <label><input type="checkbox" name="indicators" value="moving_average">Moving Average</label>
-        <label><input type="checkbox" name="indicators" value="return">Return</label>
-      </fieldset>
-      <button type="submit">Run Model</button>
-    </form>
-  </body>
-</html>
-
+{% extends "layout.html" %}
+{% block title %}Financial Model Playground{% endblock %}
+{% block content %}
+<nav>
+  <a href="{{ url_for('categories.index') }}">Categories</a>
+</nav>
+<h1>Financial Model Playground</h1>
+<form method="post">
+  <label>Symbol: <input name="symbol" required></label><br>
+  <label>Start Date (YYYY-MM-DD): <input name="start" required></label><br>
+  <label>End Date (YYYY-MM-DD): <input name="end"></label><br>
+  <label>Model Type:
+    <select name="model_type">
+      <option value="ar"><abbr title="AutoRegressive">AR</abbr></option>
+      <option value="var"><abbr title="Vector AutoRegressive">VAR</abbr></option>
+    </select>
+  </label><br>
+  <fieldset>
+    <legend>Indicators</legend>
+    <label><input type="checkbox" name="indicators" value="moving_average">Moving Average</label>
+    <label><input type="checkbox" name="indicators" value="return">Return</label>
+  </fieldset>
+  <button type="submit">Run Model</button>
+</form>
+{% endblock %}

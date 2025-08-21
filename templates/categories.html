@@ -1,28 +1,23 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Categories</title>
-  </head>
-  <body>
-    <h1>Categories</h1>
-    {% for category in categories %}
-      <section>
-        <h2>{{ category.name }}</h2>
-        <p>{{ category.description }}</p>
-        <h3>Deterministic Models</h3>
-        <ul>
-          {% for model in category.deterministic_examples %}
-            <li>{{ model }}</li>
-          {% endfor %}
-        </ul>
-        <h3>Stochastic Models</h3>
-        <ul>
-          {% for model in category.stochastic_examples %}
-            <li>{{ model }}</li>
-          {% endfor %}
-        </ul>
-      </section>
-    {% endfor %}
-  </body>
-</html>
+{% extends "layout.html" %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<h1>Categories</h1>
+{% for category in categories %}
+  <section>
+    <h2>{{ category.name }}</h2>
+    <p>{{ category.description }}</p>
+    <h3>Deterministic Models</h3>
+    <ul>
+      {% for model in category.deterministic_examples %}
+        <li>{{ model | replace('GDP', '<abbr title="Gross Domestic Product">GDP</abbr>') | safe }}</li>
+      {% endfor %}
+    </ul>
+    <h3>Stochastic Models</h3>
+    <ul>
+      {% for model in category.stochastic_examples %}
+        <li>{{ model }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endfor %}
+{% endblock %}
