@@ -1,81 +1,171 @@
-# Dataset Builder (Create / Edit)
+# Dataset Builder — Screen Definition
 
-Dataset Builder allows researchers to create, edit, and manage datasets with full versioning, schema definitions, and publication-ready exports.  
+## 1. Screen Purpose
 
----
-
-## 1. Basic Info
-- **Name**: Dataset title (required)
-- **Description**: Detailed description of dataset contents
-- **Tags**: Comma-separated keywords for search/discovery
-- **Visibility**: `Private` | `Team` | `Public`
+The **Dataset Builder** provides a guided interface to create or edit datasets.
+It supports manual upload, API binding, schema definition, citation management, and importing datasets directly from Zenodo using DOI.
+Export to Zenodo is **not supported directly**; datasets are exported only when bundled with models for publication.
 
 ---
 
-## 2. Schema Definition
-- **Columns** (add / edit / delete)
-  - Column Name
-  - Data Type (`string`, `number`, `boolean`, `date`, `geo`, etc.)
-  - Units (optional)
-  - Notes / Metadata
-- **Schema Preview**: Live preview of schema structure
+## 2. Layout Components
+
+### (A) Navigation Tabs (Builder Steps)
+
+* Basic Info
+* Schema Definition
+* Source & Citation
+* Data Upload & Import
+* Versions & Update Management
+* Access Permissions
+* Save Draft / Publish
 
 ---
 
-## 3. Source & Citation
-- **BibTeX Input**: Paste citation in BibTeX format
-- **URL Source**: External dataset source link
-- **Upload Log**: Record of file sources with timestamps
-- **Attribution Metadata**: License, copyright
+## 3. Sub-Screens
+
+### 3.1 Basic Info
+
+* **Fields**
+
+  * Dataset Name
+  * Description (Markdown supported)
+  * Tags (comma-separated)
+  * Visibility (Private / Team / Public)
+* **Actions**
+
+  * \[Save Draft]
+  * \[Next → Schema Definition]
 
 ---
 
-## 4. Data Upload & Import
-- **Direct Upload**  
-  - Upload CSV / JSON files  
-  - Drag & drop interface  
-  - File validation & schema check  
+### 3.2 Schema Definition
 
-- **API Binding**  
-  - Connect external API endpoints  
-  - Schedule periodic fetch (daily / weekly / monthly)  
+* **Schema Table**
 
-- **Email Upload** ✉️  
-  - Each dataset has a **unique email address** (auto-generated)  
-  - Users can **send files as email attachments** → Automatically ingested  
-  - System detects:  
-    - **Attachments** (CSV, JSON)  
-    - **Large file links** (Google Drive, Dropbox, S3, Zenodo, etc.)  
-  - Email log stored in **Upload History**  
+  * Column Name
+  * Data Type (int, float, string, datetime, boolean)
+  * Unit (optional)
+  * Description
+* **Actions**
+
+  * \[Add Column]
+  * \[Import Schema from File] (CSV header or JSON schema)
+  * \[Save Schema]
 
 ---
 
-## 5. Versions & Update Management
-- **Version Control**  
-  - Create new dataset version on upload/change  
-  - Track schema evolution across versions  
-- **Update Logs**  
-  - Timestamped records of all changes  
-  - Diff view (compare versions)
+### 3.3 Source & Citation
+
+* **Citation Types**
+
+  * BibTeX Entry (text area)
+  * URL Reference (string, with fetch metadata option)
+  * Zenodo DOI (imported source; auto-filled if dataset imported from Zenodo)
+* **Display**
+
+  * List of all citations attached to dataset
+  * Show type, value, date added
+* **Actions**
+
+  * \[Add Citation]
+  * \[Delete Citation]
 
 ---
 
-## 6. Access Permissions
-- **Role-based Access**
-  - **Viewer** – read-only
-  - **Contributor** – create and edit own datasets, and contribute to team datasets
-  - **Owner** – manage visibility, roles, and publication
-  - **Admin** – manage all datasets
-- **Team Sharing**
-  - Assign permissions per member / group
-- **Public Access**
-  - Enable/disable anonymous read-only API access
+### 3.4 Data Upload & Import
+
+* **Upload Options**
+
+  * Upload CSV (single or multiple files)
+  * Upload JSON
+  * API Binding (provide endpoint + auth)
+* **Import Option**
+
+  * **Import from Zenodo DOI**
+
+    * Input field: DOI string (e.g., `10.5281/zenodo.1234567`)
+    * \[Fetch Metadata] → displays dataset title, authors, description, license, and available files
+    * Preview table: file names, size, format
+    * \[Import Dataset] → downloads and registers dataset version in Economical
+* **Actions**
+
+  * \[Validate Data] (schema compliance check)
+  * \[Save Draft]
 
 ---
 
-## 7. Save Draft / Publish
-- **Save Draft**: Work-in-progress not visible outside creator/team  
-- **Publish**: Finalized dataset visible according to chosen visibility  
-- **Export Options**:  
-  - JSON schema  
-  - Zenodo-ready package (DOI publish workflow)  
+### 3.5 Versions & Update Management
+
+* **Version Table**
+
+  * Version Tag
+  * Changelog
+  * Created At
+  * Created By
+* **Actions**
+
+  * \[Create New Version] (snapshot current dataset state)
+  * \[Restore Version]
+
+---
+
+### 3.6 Access Permissions
+
+* **Permissions Table**
+
+  * User / Team
+  * Access Level (Read / Write / Admin)
+* **Actions**
+
+  * \[Add Permission]
+  * \[Remove Permission]
+
+---
+
+### 3.7 Save Draft / Publish
+
+* **Save Options**
+
+  * \[Save Draft] (keeps dataset private until published)
+  * \[Publish Dataset] (makes dataset visible according to chosen visibility)
+* **Note**: Export to Zenodo is not available at dataset level. Datasets are exported **only as part of model publication workflows**.
+
+---
+
+## 4. Modals
+
+### Schema Import Modal
+
+* Upload CSV/JSON to auto-generate schema preview before applying
+
+### API Binding Modal
+
+* Configure API endpoint, authentication, refresh frequency
+
+### Zenodo Import Modal
+
+* Input: DOI
+* Output: metadata preview (title, authors, license, files)
+* Action: \[Import]
+
+---
+
+## 5. Key Features
+
+1. **Flexible Data Input** — Upload from files, APIs, or import directly from Zenodo by DOI.
+2. **Schema Control** — Explicit schema definition with units and types.
+3. **Citation Management** — Record BibTeX, URL, and Zenodo DOI as data provenance.
+4. **Versioning** — Track changes across dataset versions with changelog.
+5. **Access Permissions** — Control dataset access at user/team level.
+6. **Separation of Concerns** — Export to Zenodo only occurs through model bundling, avoiding license issues with standalone datasets.
+
+---
+
+## 6. Navigation Flow
+
+* Access from Dataset Catalog → \[Create Dataset] or \[Edit Dataset]
+* Builder guides user step by step: Basic Info → Schema → Source & Citation → Data Upload & Import → Versions → Permissions → Save/Publish
+* Importing from Zenodo DOI populates citation automatically and stores source metadata
+* Published datasets appear in Dataset Catalog with proper provenance
+
