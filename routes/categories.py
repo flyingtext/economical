@@ -6,6 +6,7 @@ This module defines static category information that can be imported from
 routes and templates without executing any I/O on import.
 """
 
+from functools import lru_cache
 from flask import Blueprint, render_template
 from typing import Dict, List, TypedDict
 
@@ -75,8 +76,14 @@ CATEGORIES: Dict[str, Category] = {
 }
 
 
+@lru_cache()
 def get_categories() -> List[Category]:
-    """Return all category definitions."""
+    """Return all category definitions.
+
+    The result is cached in-process with :func:`functools.lru_cache` to
+    avoid rebuilding the category list on each request. This lightweight
+    approach can be replaced with a more robust cache if necessary.
+    """
 
     return list(CATEGORIES.values())
 
