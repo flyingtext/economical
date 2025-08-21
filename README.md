@@ -134,6 +134,30 @@ python run.py
 
 ---
 
+
+## Run (dev)
+
+```bash
+# 1) (optional) create a virtualenv
+python -m venv .venv && source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+
+# 2) install deps
+pip install -r requirements.txt
+# optional dev helpers
+pip install -r requirements-dev.txt
+
+# 3) configure env (optional)
+cp .env.example .env  # then edit if needed
+
+# 4) start
+python run.py                 # tries app:app then app:create_app
+python run.py --reload        # auto-reload
+python run.py --app app:create_app --factory
+python run.py --host 0.0.0.0 --port 8000
+```
+
+---
+
 ## ⚙️ Environment Variables
 
 Configure the application with the following environment variables:
@@ -264,3 +288,4 @@ Future development may be supported via **grants, academic collaborations, or re
 * Project lead & system design by JiHyeon Yoon
 * Built with: Python, React, Tailwind, Flask/FastAPI
 * Assisted by: OpenAI ChatGPT & Codex (prompt-driven development support)
+
