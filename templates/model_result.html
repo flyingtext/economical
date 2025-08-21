@@ -1,33 +1,33 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Model Result</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  </head>
-  <body>
-    <nav>
-      <a href="{{ url_for('categories.index') }}">Categories</a>
-      {% if category_url %}
-      <a href="{{ category_url }}">See Category</a>
-      {% endif %}
-    </nav>
-    <h1>Results for {{ symbol }}</h1>
-    <img src="data:image/png;base64,{{ plot_data }}" alt="Actual vs Predicted">
-    <h2>Parameters</h2>
-    <ul>
-    {% for name, value in params.items() %}
-      <li>{{ name }}: {{ value }}</li>
-    {% endfor %}
-    </ul>
-    {% if indicators %}
-    <h2>Indicators</h2>
-    <ul>
-    {% for name, value in indicators.items() %}
-      <li>{{ name }}: {{ value }}</li>
-    {% endfor %}
-    </ul>
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Model Result</title>
+{% endblock %}
+
+{% block content %}
+  <nav>
+    <a href="{{ url_for('categories.index') }}">Categories</a>
+    {% if category_url %}
+    <a href="{{ category_url }}">See Category</a>
     {% endif %}
-    <p><a href="{{ url_for('model.form') }}">Back</a></p>
-  </body>
-</html>
+  </nav>
+  <h1>Results for {{ symbol }}</h1>
+  <img src="data:image/png;base64,{{ plot_data }}" alt="Actual vs Predicted">
+  <h2>Parameters</h2>
+  <ul>
+  {% for name, value in params.items() %}
+    <li>{{ name }}: {{ value }}</li>
+  {% endfor %}
+  </ul>
+  {% if indicators %}
+  <h2>Indicators</h2>
+  <ul>
+  {% for name, value in indicators.items() %}
+    <li>{{ name }}: {{ value }}</li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  <p><a href="{{ url_for('model.form') }}">Back</a></p>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

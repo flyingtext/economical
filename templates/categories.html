@@ -1,60 +1,57 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Categories</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-  </head>
-  <body>
-    <h1>Categories</h1>
-    
-    <div id="controls">
-      <input type="text" id="search" placeholder="Search categories..." />
-      <div id="filters">
-        {% for level in categories | map(attribute='adaptability') | unique %}
-          <label>
-            <input type="checkbox" class="filter-checkbox" value="{{ level }}" />
-            {{ level }}
-          </label>
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Categories</title>
+{% endblock %}
+
+{% block content %}
+  <h1>Categories</h1>
+
+  <div id="controls">
+    <input type="text" id="search" placeholder="Search categories..." />
+    <div id="filters">
+      {% for level in categories | map(attribute='adaptability') | unique %}
+        <label>
+          <input type="checkbox" class="filter-checkbox" value="{{ level }}" />
+          {{ level }}
+        </label>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-container">
+  {% for category in categories %}
+    <section class="card" id="{{ category.name|lower|replace(' ', '-') }}">
+      <h2>{{ category.name }}</h2>
+      <p>{{ category.description }}</p>
+      <h3>Deterministic Models</h3>
+      <ul>
+        {% for model in category.deterministic_examples %}
+          <li id="{{ model|lower|replace(' ', '-') }}">
+            {{ model }}
+            {% if category.links and model in category.links %}
+              {% set href = category.links[model] %}
+              {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
+              <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
+            {% endif %}
+          </li>
         {% endfor %}
-      </div>
-    </div>
-    <div class="card-container">
-    {% for category in categories %}
-      <section class="card" id="{{ category.name|lower|replace(' ', '-') }}">
-        <h2>{{ category.name }}</h2>
-        <p>{{ category.description }}</p>
-        <h3>Deterministic Models</h3>
-        <ul>
-          {% for model in category.deterministic_examples %}
-            <li id="{{ model|lower|replace(' ', '-') }}">
-              {{ model }}
-              {% if category.links and model in category.links %}
-                {% set href = category.links[model] %}
-                {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
-                <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-        <h3>Stochastic Models</h3>
-        <ul>
-          {% for model in category.stochastic_examples %}
-            <li id="{{ model|lower|replace(' ', '-') }}">
-              {{ model }}
-              {% if category.links and model in category.links %}
-                {% set href = category.links[model] %}
-                {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
-                <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </section>
-    {% endfor %}
-    </div>
+      </ul>
+      <h3>Stochastic Models</h3>
+      <ul>
+        {% for model in category.stochastic_examples %}
+          <li id="{{ model|lower|replace(' ', '-') }}">
+            {{ model }}
+            {% if category.links and model in category.links %}
+              {% set href = category.links[model] %}
+              {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
+              <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endfor %}
+  </div>
+{% endblock %}
 
-    <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
-
-  </body>
-</html>
+{% block scripts %}{% endblock %}
