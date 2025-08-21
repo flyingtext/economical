@@ -1,82 +1,100 @@
-# Dataset Detail — Source & Citation (Screen Definition)
+# Dataset Detail — Source & Citation — Screen Definition
 
 ## 1. Screen Purpose
-The **Source & Citation tab** provides metadata about where the dataset originates, how it should be cited, and when/why updates occurred.  
-It ensures transparency, reproducibility, and proper academic attribution.
+
+The **Source & Citation** sub-screen provides full provenance information for the dataset.
+It enables users to record, view, and manage citations (BibTeX, URLs, Zenodo DOIs) and ensures transparency of dataset origins.
+When a dataset is imported from Zenodo, its DOI and associated metadata are displayed here.
 
 ---
 
 ## 2. Layout Components
 
 ### (A) Header
-- Dataset Title (link back to Overview)
-- Current Tab: **Source & Citation**
-- Action Buttons:
-  - [Copy Citation] → copies current citation format
-  - [Export Metadata] → modal to export BibTeX/JSON schema
+
+* Title: **Source & Citation**
+* Dataset Name (breadcrumb from parent Dataset Detail)
+
+### (B) Citation List Panel
+
+* **Citation Table Columns**
+
+  * Type (BibTeX / URL / Zenodo DOI)
+  * Value (string or DOI identifier)
+  * Metadata Preview (for Zenodo: title, authors, license; for URL: fetched title if available)
+  * Added At (timestamp)
+  * Actions (\[View], \[Delete])
+
+* **Examples**
+
+  * BibTeX: `@article{...}` (expandable)
+  * URL: `https://example.com/source` (with fetched title: “OECD Economic Outlook 2025”)
+  * Zenodo DOI: `10.5281/zenodo.1234567` (with metadata: “Dataset: Global Financial Indicators”, Author: J. Doe, License: CC-BY-4.0)
+
+### (C) Add Citation Panel
+
+* **Input Options**
+
+  * Radio select: \[BibTeX] / \[URL] / \[Zenodo DOI]
+* **Fields**
+
+  * If BibTeX → Textarea (paste entry)
+  * If URL → URL input field (+ optional fetch metadata button)
+  * If Zenodo DOI → DOI input field (`10.xxxx/zenodo.xxxxxxx`)
+* **Actions**
+
+  * \[Fetch Metadata] (for URL/DOI)
+  * \[Add Citation]
 
 ---
 
-### (B) Source Information
-- **Primary Source**  
-  - Name of institution/author  
-  - Link (URL / DOI)  
-  - Access date  
-- **Secondary Sources** (if dataset aggregates multiple origins)  
-  - List view with name, URL/DOI, contributor  
+## 3. Zenodo DOI Handling
+
+### (A) Import Mode
+
+* If dataset was originally imported from Zenodo Builder:
+
+  * DOI entry is auto-filled and **locked (non-deletable)**
+  * Metadata (title, authors, license, description) displayed in detail box
+
+### (B) Manual Citation Mode
+
+* If user adds Zenodo DOI manually (for provenance reference only):
+
+  * DOI shown in table with fetched metadata
+  * Can be deleted like other citations
 
 ---
 
-### (C) Citation Formats
-- **BibTeX** (pre-generated block)  
-- **APA / MLA / Chicago** (dropdown to switch formats)  
-- [Copy] button for each format  
+## 4. Modals
+
+### (A) View Citation Modal
+
+* Full metadata or BibTeX entry shown in detail view
+* Copy-to-clipboard button
+
+### (B) Delete Citation Modal
+
+* Confirmation required
+* Message: “Are you sure you want to remove this citation? This does not delete the dataset itself, only its provenance reference.”
+* Exception: Zenodo DOI added via Import Mode cannot be deleted
 
 ---
 
-### (D) Source Update Logs
-| Date       | Action            | Performed By | Notes/Change |
-|------------|------------------|--------------|--------------|
-| 2025-08-10 | Added new source | user_123     | Added OECD GDP 2023 |
-| 2025-08-15 | Modified citation| admin_team   | DOI updated to v2 |
+## 5. Key Features
 
-- Sortable by date
-- Shows CRUD history of source entries
-
----
-
-### (E) Export Metadata Modal
-- **Title**: “Export Source & Citation Metadata”
-- Fields:
-  - Format: BibTeX / JSON / XML
-  - Delivery:  
-    - Download immediately  
-    - Send to registered email (logs entry to Exports & Backups)
-- Actions:
-  - [Confirm Export]
-  - [Cancel]
+1. **Comprehensive Provenance** — Supports BibTeX, URLs, and Zenodo DOIs.
+2. **Metadata Integration** — Automatically fetches and displays metadata from URL/DOI sources.
+3. **Zenodo Import Lock** — Imported Zenodo DOIs are permanent, ensuring dataset provenance cannot be lost.
+4. **Transparency & Reproducibility** — Clear history of when and how citations were added.
+5. **User Control** — Citations can be added, previewed, or removed (except locked imports).
 
 ---
 
-## 3. Logging Rules
-- If **Send to Email** selected → export job logged in My Account or Team Settings depending on ownership  
-- If **Download Immediately** → lightweight log (download count) in Usage & Statistics only  
+## 6. Navigation Flow
 
----
-
-## 4. Key Features
-1. **Transparency**: show all data sources with DOI/URL references.  
-2. **Academic Integrity**: ready-to-use citation blocks in multiple formats.  
-3. **Traceability**: update logs show who added/modified source entries.  
-4. **Export Options**: citation metadata exportable in multiple formats.  
-5. **Integration with Logs**: exports logged consistently with account/team ownership.  
-
----
-
-## 5. Navigation Flow
-- Dataset Detail → [Source & Citation tab]  
-- User can:
-  - View primary/secondary sources  
-  - Copy citations in desired format  
-  - Check update logs (who/when/what)  
-  - Export citation metadata via modal  
+* From **Dataset Detail** → user clicks “Source & Citation” tab
+* User sees all citations listed in a table
+* User can add new citation by selecting type and providing input
+* If DOI import is used, metadata is auto-fetched and displayed
+* Imported Zenodo DOIs remain permanent; additional citations can still be added
