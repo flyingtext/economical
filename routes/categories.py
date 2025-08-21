@@ -19,6 +19,7 @@ class Category(TypedDict):
     stochastic_examples: List[str]
     adaptability: str
     related_categories: List[str]
+    links: Dict[str, str]
 
 
 CATEGORIES: Dict[str, Category] = {
@@ -29,6 +30,9 @@ CATEGORIES: Dict[str, Category] = {
         "stochastic_examples": ["market volatility", "interest rate shocks"],
         "adaptability": "High",
         "related_categories": ["finance", "statistics"],
+        "links": {
+            "GDP growth": "/categories/finance#stock-price-simulation",
+        },
     },
     "finance": {
         "name": "Finance",
@@ -37,6 +41,9 @@ CATEGORIES: Dict[str, Category] = {
         "stochastic_examples": ["stock price simulation", "risk models"],
         "adaptability": "Medium",
         "related_categories": ["economics"],
+        "links": {
+            "stock price simulation": "/categories/economics#gdp-growth",
+        },
     },
 }
 
@@ -55,3 +62,10 @@ def index() -> str:
     """Render the categories page."""
 
     return render_template("categories.html", categories=get_categories())
+
+
+@bp.get("/<path:subpath>")
+def anchor(subpath: str) -> str:
+    """Allow category path segments for anchor links."""
+
+    return index()
