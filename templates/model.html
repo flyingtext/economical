@@ -5,6 +5,9 @@
     <title>Financial Model Playground</title>
   </head>
   <body>
+    <nav>
+      <a href="{{ url_for('categories.index') }}">Categories</a>
+    </nav>
     <h1>Financial Model Playground</h1>
     <form method="post">
       <label>Symbol: <input name="symbol" required></label><br>

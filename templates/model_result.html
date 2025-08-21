@@ -5,6 +5,9 @@
     <title>Model Result</title>
   </head>
   <body>
+    <nav>
+      <a href="{{ url_for('categories.index') }}">Categories</a>
+    </nav>
     <h1>Results for {{ symbol }}</h1>
     <img src="data:image/png;base64,{{ plot_data }}" alt="Actual vs Predicted">
     <h2>Parameters</h2>
