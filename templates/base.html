@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tooltips.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
