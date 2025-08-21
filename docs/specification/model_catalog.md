@@ -125,9 +125,10 @@
 
 ## 5. Permissions
 
-* **My Models**: full control (edit, run, delete, export)
-* **Team Models**: view/edit depending on role in team
-* **Public Models**: view-only, except for forking (if enabled)
+* **Viewer** – can browse public models
+* **Contributor** – can edit, run, delete, or export models they own and contribute to team models
+* **Owner** – full control over owned models, including visibility and publication management
+* **Admin** – manage all models across the platform
 
 ---
 

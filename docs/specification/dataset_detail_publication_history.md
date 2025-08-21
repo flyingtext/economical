@@ -75,9 +75,10 @@
 
 ## 5. Permissions
 
-* **Viewer**: Publication 기록 열람만 가능
-* **Editor/Owner**: Zenodo 업로드, 메타데이터 동기화, 메모 추가 가능
-* **Admin**: DOI 삭제(로컬 기록만 삭제, Zenodo 원본은 유지)
+* **Viewer** – Publication 기록 열람만 가능
+* **Contributor** – Zenodo 업로드, 메타데이터 동기화, 메모 추가 가능
+* **Owner** – Contributor 권한 + 가시성, 역할, 공개 설정 관리
+* **Admin** – DOI 삭제(로컬 기록만 삭제, Zenodo 원본은 유지)
 
 ---
 

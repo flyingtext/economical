@@ -120,10 +120,10 @@
 
 ## 5. Permissions
 
-* **Single Run / Batch Run**: available to model owners and editors
-* **Scheduling (cron)**: restricted to dataset/model owners or team admins
-* **Batch Deletion / Management**: admin-level only
-* **Scenario Export**: all editors
+* **Viewer** – read-only access to results
+* **Contributor** – can run single or batch jobs and export scenarios
+* **Owner** – can schedule jobs via cron and manage runs for owned models
+* **Admin** – can delete or manage any batch runs
 
 ---
 

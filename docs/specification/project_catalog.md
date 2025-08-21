@@ -81,10 +81,10 @@
 
 ## 7. Permissions
 
-* Viewer: can only see **Public Projects**
-* Team Member: can see **My Projects + Team Projects**
-* Owner/Editor: can edit own projects
-* Admin: full visibility and management
+* **Viewer** – can only see **Public Projects**
+* **Contributor** – can see and edit **My Projects** and **Team Projects**
+* **Owner** – can manage visibility, roles, and publication for owned projects
+* **Admin** – full visibility and management
 
 ---
 

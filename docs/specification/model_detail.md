@@ -143,9 +143,10 @@ Tabs are top-level navigation within the page:
 
 ## 6. Permissions
 
-* Viewer: read-only
-* Editor/Owner: full access, edit, publish, export
-* Team Member: limited based on roles
+* **Viewer** – read-only
+* **Contributor** – edit, publish, and export models they create or team models
+* **Owner** – Contributor 권한 + 가시성, 역할, 공개 설정 관리
+* **Admin** – manage all models
 
 ---
 

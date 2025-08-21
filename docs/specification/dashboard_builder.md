@@ -95,7 +95,7 @@
 
 ### 4) Sharing & Permissions
 
-* Member list with roles (Owner, Editor, Viewer)
+* Member list with roles (Viewer, Contributor, Owner, Admin)
 * Actions: \[Add Member], \[Change Role], \[Remove]
 * Public link toggle (if visibility = Public)
 
@@ -121,10 +121,10 @@
 
 ## 6. Permissions
 
-* Viewer: view published dashboards only
-* Editor: edit layout, widgets, bindings
-* Owner: full control + sharing/publish rights
-* Admin: override permissions
+* **Viewer** – view published dashboards only
+* **Contributor** – edit layout, widgets, and bindings
+* **Owner** – full control plus sharing and publication rights
+* **Admin** – override permissions and manage all dashboards
 
 ---
 

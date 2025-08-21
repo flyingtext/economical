@@ -47,8 +47,8 @@ Researchers can configure when and how often a model runs predictions, bind data
   - Email notification with results (attachments or download link)
   - Zenodo auto-publication option (DOI each run or per schedule)
 - **Permissions**
-  - Share with team
-  - Restrict to owner only
+  - Share with team contributors
+  - Restrict to the owner only
 - **Save / Cancel**
 
 ---

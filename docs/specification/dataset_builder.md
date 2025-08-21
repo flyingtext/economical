@@ -61,11 +61,14 @@ Dataset Builder allows researchers to create, edit, and manage datasets with ful
 ---
 
 ## 6. Access Permissions
-- **Role-based Access**  
-  - Owner, Editor, Viewer  
-- **Team Sharing**  
-  - Assign permissions per member / group  
-- **Public Access**  
+- **Role-based Access**
+  - **Viewer** – read-only
+  - **Contributor** – create and edit own datasets, and contribute to team datasets
+  - **Owner** – manage visibility, roles, and publication
+  - **Admin** – manage all datasets
+- **Team Sharing**
+  - Assign permissions per member / group
+- **Public Access**
   - Enable/disable anonymous read-only API access
 
 ---

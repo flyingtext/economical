@@ -24,7 +24,7 @@ It provides access to user profile, security settings, preferences, export logs,
   - Name
   - Email (primary, verified/unverified)
   - Affiliation / Institution
-  - Role (User / Researcher / Admin, etc.)
+  - Role (Viewer / Contributor / Owner / Admin)
   - Profile Picture
 - **Actions**
   - [Edit Profile]  

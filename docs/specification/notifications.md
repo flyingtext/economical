@@ -89,8 +89,10 @@
 
 ## 6. Permissions
 
-* All users can see **their own alerts, subscriptions, and system messages**.
-* Admins can broadcast system messages.
+* **Viewer** – can view their own alerts, subscriptions, and system messages
+* **Contributor** – can manage their own subscriptions and notifications
+* **Owner** – same as Contributor for owned or team resources
+* **Admin** – can broadcast system messages
 
 ---
 

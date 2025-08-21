@@ -154,8 +154,10 @@
 
 ## 6. Permissions
 
-* Admin role required
-* Sub-admin roles may be scoped (e.g., Dataset Admin, Community Moderator)
+* **Viewer** – no access
+* **Contributor** – no access
+* **Owner** – no access
+* **Admin** – required; sub-admin roles may be scoped (e.g., Dataset Admin, Community Moderator)
 
 ---
 

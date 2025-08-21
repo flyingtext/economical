@@ -70,7 +70,7 @@
 
 ### 4) Team Members & Roles
 
-* **Members list**: user name, email, role (Owner, Editor, Viewer)
+* **Members list**: user name, email, role (Viewer, Contributor, Owner, Admin)
 * Actions: \[Add Member], \[Assign Role], \[Remove]
 * Visual: member avatars
 
@@ -115,9 +115,10 @@
 
 ## 6. Permissions
 
-* Viewer: no access
-* Editor/Owner: full control (link resources, manage members, configure settings)
-* Team Member: restricted depending on role (e.g., can view but not edit resources)
+* **Viewer** – no access
+* **Contributor** – can link resources and configure settings for their projects
+* **Owner** – full control, including managing members and publication
+* **Admin** – manage all projects
 
 ---
 

@@ -66,7 +66,7 @@
 
 ### 4) Team & Sharing Permissions
 
-* Access list (Owner, Editors, Viewers)
+* Access list (Viewer, Contributor, Owner, Admin)
 * Sharing link (if public)
 * Actions: \[Add Member], \[Change Role], \[Remove]
 
@@ -89,9 +89,10 @@
 
 ## 6. Permissions
 
-* Viewer: read-only widgets
-* Editor/Owner: can edit layout, add/remove widgets
-* Team Member: access based on role
+* **Viewer** – read-only widgets
+* **Contributor** – edit layout and add/remove widgets for dashboards they contribute to
+* **Owner** – full control, including sharing and publication settings
+* **Admin** – manage all dashboards
 
 ---
 
