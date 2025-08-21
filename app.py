@@ -10,6 +10,7 @@ from routes.data import bp as data_bp
 from routes.model import bp as model_bp
 from routes.categories import bp as categories_bp
 from routes.auth import bp as auth_bp
+from routes.my_account import bp as my_account_bp
 from routes.datasets import bp as datasets_bp
 from routes.projects import bp as projects_bp
 from routes.dashboards import bp as dashboards_bp
@@ -19,10 +20,12 @@ from routes.admin import bp as admin_bp
 from services.data_ingestion import cache_series, fetch_remote_series
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev")
 app.register_blueprint(data_bp)
 app.register_blueprint(model_bp)
 app.register_blueprint(categories_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(my_account_bp)
 app.register_blueprint(datasets_bp)
 app.register_blueprint(projects_bp)
 app.register_blueprint(dashboards_bp)

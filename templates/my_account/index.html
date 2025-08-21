@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block head %}
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-4xl">
+  <h1 class="mb-4 text-2xl font-bold">My Account</h1>
+  <div>
+    <nav class="flex border-b" id="tabs">
+      <button data-tab-button data-tab-target="tab-profile" class="px-4 py-2 text-sm">Profile</button>
+      <button data-tab-button data-tab-target="tab-security" class="px-4 py-2 text-sm">Security</button>
+      <button data-tab-button data-tab-target="tab-preferences" class="px-4 py-2 text-sm">Preferences</button>
+      <button data-tab-button data-tab-target="tab-exports" class="px-4 py-2 text-sm">Exports &amp; Backups</button>
+      <button data-tab-button data-tab-target="tab-publications" class="px-4 py-2 text-sm">Publication History</button>
+    </nav>
+    <div class="mt-4">
+      <div id="tab-profile" data-tab class="space-y-2">
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Affiliation:</strong> {{ user.affiliation }}</p>
+        <p><strong>ORCID:</strong> {{ user.orcid or 'Not linked' }}{% if orcid_name %} ({{ orcid_name }}){% endif %}</p>
+        <button class="mt-2 rounded bg-indigo-600 px-4 py-2 text-white" onclick="toggleModal('profileModal', true)">Edit Profile</button>
+      </div>
+      <div id="tab-security" data-tab class="hidden">
+        <form method="post" class="space-y-4">
+          <input type="hidden" name="action" value="change_password" />
+          <div>
+            <label class="block text-sm font-medium">New Password</label>
+            <input name="password" type="password" class="mt-1 w-full rounded border p-2" />
+          </div>
+          <button class="rounded bg-indigo-600 px-4 py-2 text-white">Change Password</button>
+        </form>
+        <h3 class="mt-6 text-lg font-semibold">Active Sessions</h3>
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 text-left text-sm font-medium">IP</th>
+              <th class="px-4 py-2 text-left text-sm font-medium">Login At</th>
+              <th class="px-4 py-2"></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for s in sessions %}
+            <tr class="border-b">
+              <td class="px-4 py-2 text-sm">{{ s.ip }}</td>
+              <td class="px-4 py-2 text-sm">{{ s.login_at }}</td>
+              <td class="px-4 py-2 text-right">
+                <form method="post" action="{{ url_for('my_account.revoke_session', token=s.token) }}">
+                  <button class="text-red-600 hover:underline">Revoke</button>
+                </form>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="3" class="px-4 py-2 text-center text-sm text-gray-500">No active sessions</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div id="tab-preferences" data-tab class="hidden">
+        <form method="post" class="space-y-4">
+          <input type="hidden" name="action" value="update_preferences" />
+          <div>
+            <label class="block text-sm font-medium">Language</label>
+            <select name="language" class="mt-1 w-full rounded border p-2">
+              <option value="en" {% if user.preferences.language=='en' %}selected{% endif %}>English</option>
+              <option value="ko" {% if user.preferences.language=='ko' %}selected{% endif %}>Korean</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Timezone</label>
+            <input name="timezone" value="{{ user.preferences.timezone }}" class="mt-1 w-full rounded border p-2" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium">Theme</label>
+            <select name="theme" class="mt-1 w-full rounded border p-2">
+              <option value="light" {% if user.preferences.theme=='light' %}selected{% endif %}>Light</option>
+              <option value="dark" {% if user.preferences.theme=='dark' %}selected{% endif %}>Dark</option>
+              <option value="auto" {% if user.preferences.theme=='auto' %}selected{% endif %}>Auto</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="flex items-center"><input type="checkbox" name="notify_email" class="mr-2" {% if user.notifications.email %}checked{% endif %}/> Email alerts</label>
+            <label class="flex items-center"><input type="checkbox" name="notify_in_app" class="mr-2" {% if user.notifications.in_app %}checked{% endif %}/> In-app notifications</label>
+          </div>
+          <button class="rounded bg-indigo-600 px-4 py-2 text-white">Save Preferences</button>
+        </form>
+      </div>
+      <div id="tab-exports" data-tab class="hidden">
+        <h3 class="mb-2 text-lg font-semibold">Export History</h3>
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 text-left text-sm font-medium">ID</th>
+              <th class="px-4 py-2 text-left text-sm font-medium">Name</th>
+              <th class="px-4 py-2 text-left text-sm font-medium">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for e in user.exports %}
+            <tr class="border-b"><td class="px-4 py-2 text-sm">{{ e.id }}</td><td class="px-4 py-2 text-sm">{{ e.name }}</td><td class="px-4 py-2 text-sm">{{ e.status }}</td></tr>
+            {% else %}
+            <tr><td colspan="3" class="px-4 py-2 text-center text-sm text-gray-500">No exports</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <h3 class="mt-6 mb-2 text-lg font-semibold">Backups</h3>
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead><tr><th class="px-4 py-2 text-left text-sm font-medium">Requested At</th><th class="px-4 py-2 text-left text-sm font-medium">Status</th></tr></thead>
+          <tbody>
+            {% for b in user.backups %}
+            <tr class="border-b"><td class="px-4 py-2 text-sm">{{ b.requested_at }}</td><td class="px-4 py-2 text-sm">{{ b.status }}</td></tr>
+            {% else %}
+            <tr><td colspan="2" class="px-4 py-2 text-center text-sm text-gray-500">No backups</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <button class="mt-4 rounded bg-indigo-600 px-4 py-2 text-white" onclick="toggleModal('backupModal', true)">Request Backup</button>
+      </div>
+      <div id="tab-publications" data-tab class="hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead><tr><th class="px-4 py-2 text-left text-sm font-medium">DOI</th><th class="px-4 py-2 text-left text-sm font-medium">Title</th><th class="px-4 py-2 text-left text-sm font-medium">Status</th></tr></thead>
+          <tbody>
+            {% for p in user.publications %}
+            <tr class="border-b"><td class="px-4 py-2 text-sm">{{ p.doi }}</td><td class="px-4 py-2 text-sm">{{ p.title }}</td><td class="px-4 py-2 text-sm">{{ p.status }}</td></tr>
+            {% else %}
+            <tr><td colspan="3" class="px-4 py-2 text-center text-sm text-gray-500">No publications</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div id="profileModal" class="fixed inset-0 z-10 hidden items-center justify-center bg-black bg-opacity-50">
+  <div class="w-full max-w-md rounded bg-white p-6">
+    <h2 class="mb-4 text-xl font-semibold">Edit Profile</h2>
+    <form method="post" class="space-y-4">
+      <input type="hidden" name="action" value="update_profile" />
+      <div>
+        <label class="block text-sm font-medium">Name</label>
+        <input name="name" value="{{ user.name }}" class="mt-1 w-full rounded border p-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">Affiliation</label>
+        <input name="affiliation" value="{{ user.affiliation }}" class="mt-1 w-full rounded border p-2" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium">ORCID iD</label>
+        <input name="orcid" value="{{ user.orcid or '' }}" class="mt-1 w-full rounded border p-2" />
+      </div>
+      <div class="flex justify-end">
+        <button type="button" class="mr-2 px-4 py-2" onclick="toggleModal('profileModal', false)">Cancel</button>
+        <button class="rounded bg-indigo-600 px-4 py-2 text-white">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Backup Confirmation Modal -->
+<div id="backupModal" class="fixed inset-0 z-10 hidden items-center justify-center bg-black bg-opacity-50">
+  <div class="w-full max-w-sm rounded bg-white p-6">
+    <h2 class="mb-4 text-xl font-semibold">Confirm Backup</h2>
+    <form method="post" class="space-y-4">
+      <input type="hidden" name="action" value="request_backup" />
+      <p>Start a new personal backup?</p>
+      <div class="flex justify-end">
+        <button type="button" class="mr-2 px-4 py-2" onclick="toggleModal('backupModal', false)">Cancel</button>
+        <button class="rounded bg-indigo-600 px-4 py-2 text-white">Start</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showTab(id) {
+  document.querySelectorAll('[data-tab]').forEach(el => el.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('[data-tab-button]').forEach(btn => btn.classList.remove('border-b-2','border-indigo-600','text-indigo-600'));
+  document.querySelector(`[data-tab-button][data-tab-target="${id}"]`).classList.add('border-b-2','border-indigo-600','text-indigo-600');
+}
+function toggleModal(id, show){
+  const el = document.getElementById(id);
+  if(show){ el.classList.remove('hidden'); el.classList.add('flex'); }
+  else { el.classList.add('hidden'); el.classList.remove('flex'); }
+}
+
+document.querySelectorAll('[data-tab-button]').forEach(btn => {
+  btn.addEventListener('click', () => showTab(btn.getAttribute('data-tab-target')));
+});
+showTab('tab-profile');
+</script>
+{% endblock %}

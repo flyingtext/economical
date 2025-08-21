@@ -2,11 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
   </head>
-  <body>
-    {% block content %}{% endblock %}
+  <body class="flex min-h-screen flex-col">
+    <header class="bg-gray-800 text-white">
+      <nav class="container mx-auto flex items-center justify-between p-4">
+        <a href="/" class="text-lg font-bold">Economical</a>
+        <div class="space-x-4">
+          {% if session.get('user') %}
+          <a href="{{ url_for('my_account.dashboard') }}" class="hover:underline">My Account</a>
+          {% else %}
+          <a href="{{ url_for('auth.login') }}" class="hover:underline">Login</a>
+          <a href="{{ url_for('auth.signup') }}" class="hover:underline">Sign Up</a>
+          {% endif %}
+        </div>
+      </nav>
+    </header>
+    <main class="container mx-auto flex-1 p-4">
+      {% block content %}{% endblock %}
+    </main>
     <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tooltips.js') }}"></script>
     {% block scripts %}{% endblock %}
