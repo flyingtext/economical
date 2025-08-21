@@ -1,4 +1,4 @@
-# 📂 Economical Sitemap (v3)
+# Economical Sitemap (v4)
 
 ## 1. Auth / Account
 - Login
@@ -9,55 +9,71 @@
   - Security
   - Preferences
   - Exports & Backups
-- Team Settings
-  - General Info
-  - Members & Roles
-  - Resource Policies
-  - Usage & Credits
-  - Exports & Backups
+  - Publication History (My Zenodo Uploads)
+
+## 2. Team Settings
+- General Info
+- Members & Roles
+- Resource Policies
+- Usage & Credits
+- Exports & Backups
+- Publication History (Team Zenodo Uploads)
 
 ---
 
-## 2. Datasets
+## 3. Datasets
 - Dataset Catalog
 - Dataset Detail
-  - Overview (metadata, description, license, source)
-  - Schema (raw data structure: columns, types, units, description)
-  - Source & Citation (BibTeX / URL + update logs)
-  - Versions & Update Logs (CRUD history, change log)
-  - Usage & Statistics (API calls, downloads, model usage)
-  - Community (comments, likes, ratings, threads)
-  - API Access (REST / WebSocket endpoints)
-  - Related Models (datasets ↔ models linkage)
+  - Overview
+  - Schema (columns/types/units)
+  - Source & Citation (BibTeX / URL + update log)
+  - Versions & Update Logs
+  - Usage & Statistics
+  - Community (comments, likes, ratings)
+  - API Access
+  - Related Models
+  - Publication History (Zenodo DOIs of dataset exports)
 
 ---
 
-## 3. Models
+## 4. Models
 - Model Catalog
 - Model Detail
-  - Overview (metadata, description, license, author)
+  - Overview
   - Fitting & Solving Results
   - Validation / Backtesting Reports
   - Prediction Schedules (cron jobs)
-  - Scenario Comparison (multi-input showcase)
+  - Scenario Comparison
   - Versions & Update Logs
-  - Community (comments, likes, ratings)
+  - Community
   - API Access
   - Related Datasets
+  - Publication History (Zenodo DOIs of model reports)
 
 ---
 
-## 4. Dashboards
+## 5. Projects
+- My Projects
+- Project Detail
+  - Linked Models
+  - Linked Datasets
+  - Team Members
+  - Activity Logs
+  - Publication History (Zenodo DOIs at project level)
+
+---
+
+## 6. Dashboards
 - My Dashboards
 - Shared Dashboards
 - Dashboard Detail
   - Layout Editor
-  - Widgets (models, datasets, GIS maps, charts)
+  - Widgets
   - Sharing & Permissions
 
 ---
 
-## 5. GIS
+## 7. GIS
 - Map Explorer
 - Dataset Visualization on Map
 - Model Outputs Visualization
@@ -65,32 +81,25 @@
 
 ---
 
-## 6. Community
+## 8. Community
 - Global Feed
 - Discussions (threads, topics)
 - Dataset Discussions
 - Model Discussions
 - Dashboard Sharing
 - My Community Activity
-  - **Personal**
-    - My Posts
-    - My Comments
-    - My Likes
-    - My Ratings
-  - **Team**
-    - Team Posts
-    - Team Comments
-    - Team Likes
-    - Team Ratings
+  - Personal (posts/comments/likes/ratings)
+  - Team (posts/comments/likes/ratings)
 
 ---
 
-## 7. Admin
+## 9. Admin
 - User Management
 - Team Management
 - Dataset Management
 - Model Management
 - Community Management
+- Zenodo Publication Management ✅ (monitor uploads, failures, re-sync DOIs)
 - System Logs
 - Database Status
 - Resource Credits
@@ -101,17 +110,7 @@
 
 ---
 
-## 8. Notifications
+## 10. Notifications
 - Real-time Alerts
-- Subscriptions (datasets, models, dashboards)
+- Subscriptions
 - System Messages
-
----
-
-## 9. Projects
-- My Projects
-- Project Detail
-  - Linked Models
-  - Linked Datasets
-  - Team Members
-  - Activity Logs
