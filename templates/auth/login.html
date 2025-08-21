@@ -10,6 +10,11 @@
         <span class="text-2xl font-bold text-gray-900">Economical</span>
       </a>
     </div>
+    {% if success %}
+    <div id="successBanner" class="rounded bg-green-100 p-3 text-green-700" role="alert" aria-live="polite">{{ success }}</div>
+    {% else %}
+    <div id="successBanner" class="hidden rounded bg-green-100 p-3 text-green-700" role="alert" aria-live="polite"></div>
+    {% endif %}
     {% if error %}
     <div id="errorBanner" class="rounded bg-red-100 p-3 text-red-700" role="alert" aria-live="assertive">{{ error }}</div>
     {% else %}
@@ -54,7 +59,9 @@ document.getElementById('loginForm').addEventListener('submit', async function (
   const button = document.getElementById('submitBtn');
   const spinner = document.getElementById('spinner');
   const errorBanner = document.getElementById('errorBanner');
+  const successBanner = document.getElementById('successBanner');
   errorBanner.classList.add('hidden');
+  successBanner.classList.add('hidden');
   button.disabled = true;
   spinner.classList.remove('hidden');
   const formData = new FormData(form);

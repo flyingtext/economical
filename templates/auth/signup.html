@@ -1,14 +1,136 @@
 {% extends 'base.html' %}
-{% block content %}
-<h1>Sign Up</h1>
-<form method="post">
-  <label for="name">Name</label>
-  <input id="name" type="text" name="name" required>
-  <label for="email">Email</label>
-  <input id="email" type="email" name="email" required>
-  <label for="password">Password</label>
-  <input id="password" type="password" name="password" required>
-  <button type="submit">Create Account</button>
-</form>
-<p><a href="/auth/login">Already have an account?</a></p>
+{% block head %}
+  <script src="https://cdn.tailwindcss.com"></script>
 {% endblock %}
+{% block content %}
+<div class="flex min-h-screen items-center justify-center bg-gray-50">
+  <div class="w-full max-w-md space-y-6 rounded bg-white p-8 shadow">
+    <div class="text-center">
+      <a href="/" class="flex flex-col items-center" aria-label="Home">
+        <span class="text-2xl font-bold text-gray-900">Economical</span>
+      </a>
+    </div>
+    {% if error %}
+    <div id="errorBanner" class="rounded bg-red-100 p-3 text-red-700" role="alert">{{ error }}</div>
+    {% else %}
+    <div id="errorBanner" class="hidden rounded bg-red-100 p-3 text-red-700" role="alert"></div>
+    {% endif %}
+    <form id="signupForm" method="post" class="space-y-4" aria-describedby="errorBanner">
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <input id="name" type="text" name="name" required class="mt-1 w-full rounded border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500" />
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input id="email" type="email" name="email" required autocomplete="email" class="mt-1 w-full rounded border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500" />
+        <p id="emailFeedback" class="mt-1 hidden text-sm text-red-600"></p>
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input id="password" type="password" name="password" required class="mt-1 w-full rounded border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500" />
+        <p id="passwordStrength" class="mt-1 text-sm"></p>
+      </div>
+      <div>
+        <label for="confirm" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+        <input id="confirm" type="password" name="confirm" required class="mt-1 w-full rounded border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500" />
+      </div>
+      <div>
+        <label for="contact" class="block text-sm font-medium text-gray-700">Contact</label>
+        <input id="contact" type="text" name="contact" required class="mt-1 w-full rounded border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500" />
+      </div>
+      <div class="flex items-center">
+        <input id="terms" type="checkbox" name="terms" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" required />
+        <label for="terms" class="ml-2 text-sm text-gray-700">I agree to the terms</label>
+      </div>
+      <button id="submitBtn" type="submit" class="flex w-full items-center justify-center rounded bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <svg id="spinner" class="hidden mr-2 h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        Create Account
+      </button>
+    </form>
+    <p class="text-center text-sm text-gray-600">
+      Already have an account?
+      <a href="/auth/login" class="text-indigo-600 hover:underline">Log in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function evaluateStrength(p) {
+  let score = 0;
+  if (p.length >= 8) score++;
+  if (/[A-Z]/.test(p)) score++;
+  if (/[a-z]/.test(p)) score++;
+  if (/\d/.test(p)) score++;
+  if (/[^A-Za-z0-9]/.test(p)) score++;
+  return score;
+}
+const passwordInput = document.getElementById('password');
+const strengthEl = document.getElementById('passwordStrength');
+passwordInput.addEventListener('input', function() {
+  const val = passwordInput.value;
+  const score = evaluateStrength(val);
+  let text = 'Weak';
+  let color = 'text-red-600';
+  if (score >= 4) { text = 'Strong'; color = 'text-green-600'; }
+  else if (score >= 3) { text = 'Medium'; color = 'text-yellow-600'; }
+  strengthEl.textContent = val ? text : '';
+  strengthEl.className = 'mt-1 text-sm ' + color;
+});
+
+const emailInput = document.getElementById('email');
+const emailFeedback = document.getElementById('emailFeedback');
+emailInput.addEventListener('blur', async function() {
+  const email = emailInput.value;
+  if (!email) return;
+  try {
+    const res = await fetch(`/auth/check-email?email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (data.exists) {
+      emailFeedback.textContent = 'Email already registered';
+      emailFeedback.classList.remove('hidden');
+    } else {
+      emailFeedback.classList.add('hidden');
+    }
+  } catch (_) {}
+});
+
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const button = document.getElementById('submitBtn');
+  const spinner = document.getElementById('spinner');
+  const errorBanner = document.getElementById('errorBanner');
+  errorBanner.classList.add('hidden');
+  button.disabled = true;
+  spinner.classList.remove('hidden');
+  const formData = new FormData(form);
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    });
+    if (response.redirected) {
+      window.location.href = response.url;
+      return;
+    }
+    if (!response.ok) {
+      const data = await response.json();
+      errorBanner.textContent = data.error || 'Sign up failed';
+      errorBanner.classList.remove('hidden');
+    }
+  } catch (err) {
+    errorBanner.textContent = 'Network error';
+    errorBanner.classList.remove('hidden');
+  } finally {
+    spinner.classList.add('hidden');
+    button.disabled = false;
+  }
+});
+</script>
+{% endblock %}
+
