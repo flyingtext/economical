@@ -15,24 +15,20 @@ from flask import (
     request,
 )
 
-from .auth import registered_users, active_sessions
+from werkzeug.security import generate_password_hash
+from models.db import SessionLocal
+from models.user import User, ActiveSession
 
 bp = Blueprint("my_account", __name__, url_prefix="/my-account")
 
 
-def _current_user() -> dict | None:
-    email = session.get("user")
-    if not email:
-        return None
-    for user in registered_users:
-        if user.get("email") == email:
-            return user
-    return None
+def _current_user_id() -> int | None:
+    return session.get("user_id")
 
 
 @bp.before_request
 def require_login() -> Any:
-    if "user" not in session:
+    if "user_id" not in session:
         return redirect(url_for("auth.login"))
     return None
 
@@ -58,54 +54,46 @@ def _fetch_orcid_name(orcid_id: str) -> str | None:
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("", methods=["GET", "POST"])
 def dashboard():
-    user = _current_user()
-    if user is None:
+    user_id = _current_user_id()
+    if user_id is None:
         return redirect(url_for("auth.login"))
+    db = SessionLocal()
+    user = db.get(User, user_id)
     action = request.form.get("action")
     if request.method == "POST" and action:
         if action == "update_profile":
-            user["name"] = request.form.get("name", user.get("name"))
-            user["affiliation"] = request.form.get(
-                "affiliation", user.get("affiliation", "")
-            )
+            user.name = request.form.get("name", user.name)
+            user.affiliation = request.form.get("affiliation", getattr(user, "affiliation", ""))
             orcid = request.form.get("orcid", "").strip() or None
-            user["orcid"] = orcid
+            setattr(user, "orcid", orcid)
         elif action == "change_password":
             new_pwd = request.form.get("password")
             if new_pwd:
-                user["password"] = new_pwd
-        elif action == "update_preferences":
-            prefs = user.setdefault("preferences", {})
-            prefs["language"] = request.form.get("language", prefs.get("language"))
-            prefs["timezone"] = request.form.get("timezone", prefs.get("timezone"))
-            prefs["theme"] = request.form.get("theme", prefs.get("theme"))
-            notes = user.setdefault("notifications", {})
-            notes["email"] = bool(request.form.get("notify_email"))
-            notes["in_app"] = bool(request.form.get("notify_in_app"))
-        elif action == "request_backup":
-            user.setdefault("backups", []).append(
-                {
-                    "requested_at": datetime.utcnow(),
-                    "status": "Processing",
-                }
-            )
-    sessions = active_sessions.get(user["email"], [])
-    orcid_name = _fetch_orcid_name(user.get("orcid")) if user.get("orcid") else None
-    return render_template(
+                user.password_hash = generate_password_hash(new_pwd)
+        db.commit()
+    sessions = db.query(ActiveSession).filter_by(user_id=user.id).all()
+    orcid_name = _fetch_orcid_name(getattr(user, "orcid", "")) if getattr(user, "orcid", None) else None
+    resp = render_template(
         "my_account/index.html",
         user=user,
         sessions=sessions,
         orcid_name=orcid_name,
     )
+    db.close()
+    return resp
 
 
 @bp.post("/session/<token>/revoke")
 def revoke_session(token: str):
-    user = _current_user()
-    if user is None:
+    user_id = _current_user_id()
+    if user_id is None:
         return redirect(url_for("auth.login"))
-    user_sessions = active_sessions.get(user["email"], [])
-    active_sessions[user["email"]] = [s for s in user_sessions if s["token"] != token]
+    db = SessionLocal()
+    sess = db.query(ActiveSession).filter_by(user_id=user_id, token=token).first()
+    if sess:
+        db.delete(sess)
+        db.commit()
+    db.close()
     if session.get("session_token") == token:
         session.clear()
         return redirect(url_for("auth.login"))

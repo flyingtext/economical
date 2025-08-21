@@ -12,13 +12,10 @@ from flask import (
 from datetime import datetime
 import re
 import secrets
+from werkzeug.security import check_password_hash, generate_password_hash
 
-# Simple in-memory store for registered users
-registered_users: list[dict] = []
-# In-memory mapping of reset tokens to user emails
-reset_tokens: dict[str, str] = {}
-# Active session registry {email: [{token, ip, login_at}]}
-active_sessions: dict[str, list[dict]] = {}
+from models.db import SessionLocal
+from models.user import User, PasswordResetToken, ActiveSession
 
 
 def _is_strong_password(password: str) -> bool:
@@ -42,17 +39,26 @@ def login():
     error = None
     success = request.args.get("success")
     if request.method == "POST":
-        email = request.form.get("email", "")
+        email = request.form.get("email", "").strip().lower()
         password = request.form.get("password", "")
-        # Placeholder authentication logic. Accept any non-empty credentials.
-        if email and password:
-            session["user"] = email
+        db = SessionLocal()
+        user = db.query(User).filter_by(email=email).first()
+        if user and check_password_hash(user.password_hash, password):
+            session["user_id"] = user.id
             token = secrets.token_urlsafe(16)
             session["session_token"] = token
-            active_sessions.setdefault(email, []).append(
-                {"token": token, "ip": request.remote_addr, "login_at": datetime.utcnow()}
+            db.add(
+                ActiveSession(
+                    user_id=user.id,
+                    token=token,
+                    ip=request.remote_addr,
+                    login_at=datetime.utcnow(),
+                )
             )
+            db.commit()
+            db.close()
             return redirect(url_for("my_account.dashboard"))
+        db.close()
         error = "Invalid credentials"
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"error": error}), 400
@@ -76,32 +82,22 @@ def signup():
             error = "Passwords do not match"
         elif not _is_strong_password(password):
             error = "Password too weak"
-        elif any(u["email"] == email for u in registered_users):
-            error = "Email already registered"
-        if error is None:
-            registered_users.append(
-                {
-                    "name": name,
-                    "email": email,
-                    "password": password,
-                    "contact": contact,
-                    "affiliation": "",
-                    "orcid": None,
-                    "preferences": {
-                        "language": "en",
-                        "timezone": "UTC",
-                        "theme": "light",
-                    },
-                    "notifications": {
-                        "email": True,
-                        "in_app": True,
-                    },
-                    "exports": [],
-                    "backups": [],
-                    "publications": [],
-                }
-            )
-            return redirect(url_for("auth.login", success="Account created. Please log in."))
+        else:
+            db = SessionLocal()
+            if db.query(User).filter_by(email=email).first():
+                error = "Email already registered"
+            elif error is None:
+                user = User(
+                    name=name,
+                    email=email,
+                    password_hash=generate_password_hash(password),
+                    contact=contact,
+                )
+                db.add(user)
+                db.commit()
+                db.close()
+                return redirect(url_for("auth.login", success="Account created. Please log in."))
+            db.close()
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"error": error}), 400
     return render_template("auth/signup.html", error=error)
@@ -111,7 +107,9 @@ def signup():
 def check_email():
     """AJAX endpoint to check for existing email."""
     email = request.args.get("email", "").strip().lower()
-    exists = any(u["email"] == email for u in registered_users)
+    db = SessionLocal()
+    exists = db.query(User).filter_by(email=email).first() is not None
+    db.close()
     return jsonify({"exists": exists})
 
 
@@ -122,16 +120,20 @@ def password_reset_request():
     message = None
     if request.method == "POST":
         email = request.form.get("email", "").strip().lower()
+        db = SessionLocal()
+        user = db.query(User).filter_by(email=email).first()
         if not email:
             error = "Email is required"
-        elif not any(u["email"] == email for u in registered_users):
+        elif not user:
             error = "Email not found"
         if error is None:
             token = secrets.token_urlsafe(16)
-            reset_tokens[token] = email
+            db.add(PasswordResetToken(token=token, user_id=user.id))
+            db.commit()
             reset_link = url_for("auth.password_reset_token", token=token, _external=True)
             print(f"Password reset link for {email}: {reset_link}")
             message = "If the email exists, a reset link has been sent."
+        db.close()
     return render_template("auth/password_reset_request.html", error=error, message=message)
 
 
@@ -139,7 +141,10 @@ def password_reset_request():
 def password_reset_token(token: str):
     """Validate reset token and update password."""
     error = None
-    if token not in reset_tokens:
+    db = SessionLocal()
+    record = db.query(PasswordResetToken).filter_by(token=token).first()
+    if not record:
+        db.close()
         return render_template(
             "auth/password_reset_form.html", error="Invalid or expired token", invalid=True
         ), 400
@@ -153,12 +158,13 @@ def password_reset_token(token: str):
         elif not _is_strong_password(password):
             error = "Password too weak"
         if error is None:
-            email = reset_tokens.pop(token)
-            for user in registered_users:
-                if user["email"] == email:
-                    user["password"] = password
-                    break
+            user = db.get(User, record.user_id)
+            user.password_hash = generate_password_hash(password)
+            db.delete(record)
+            db.commit()
+            db.close()
             return redirect(url_for("auth.password_reset_success"))
+    db.close()
     return render_template("auth/password_reset_form.html", error=error, token=token)
 
 
