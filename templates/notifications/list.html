@@ -1,5 +1,36 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>Notifications</h1>
-<p>User notifications will appear here.</p>
+<div class="mb-6">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl font-bold">Notifications</h1>
+    <div class="space-x-4 text-sm">
+      <button id="mark-all-read" class="text-blue-600 hover:underline">Mark All as Read</button>
+      <a href="{{ url_for('my_account.dashboard') }}#notification-settings" class="text-blue-600 hover:underline">Notification Settings</a>
+    </div>
+  </div>
+
+  <div class="border-b border-gray-200 mb-4">
+    <nav id="notification-tabs" class="flex space-x-4">
+      <button class="tab-link px-3 py-2 text-sm font-medium text-gray-600 border-b-2 border-transparent" data-tab="realtime">Real-time Alerts</button>
+      <button class="tab-link px-3 py-2 text-sm font-medium text-gray-600 border-b-2 border-transparent" data-tab="subscriptions">Subscriptions</button>
+      <button class="tab-link px-3 py-2 text-sm font-medium text-gray-600 border-b-2 border-transparent" data-tab="system">System Messages</button>
+    </nav>
+  </div>
+
+  <div id="tab-content">
+    <ul id="realtime" class="notification-list hidden divide-y divide-gray-200"></ul>
+    <ul id="subscriptions" class="notification-list hidden divide-y divide-gray-200"></ul>
+    <ul id="system" class="notification-list hidden divide-y divide-gray-200"></ul>
+    <div id="loading" class="py-8 text-center text-gray-500">Fetching notifications…</div>
+    <div id="empty" class="hidden py-8 text-center text-gray-500">You have no notifications.</div>
+    <div id="error" class="hidden py-8 text-center text-red-500">Failed to load notifications.</div>
+  </div>
+</div>
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+{% endblock %}
+
