@@ -7,19 +7,33 @@
   <body>
     <h1>Categories</h1>
     {% for category in categories %}
-      <section>
+      <section id="{{ category.name|lower|replace(' ', '-') }}">
         <h2>{{ category.name }}</h2>
         <p>{{ category.description }}</p>
         <h3>Deterministic Models</h3>
         <ul>
           {% for model in category.deterministic_examples %}
-            <li>{{ model }}</li>
+            <li id="{{ model|lower|replace(' ', '-') }}">
+              {{ model }}
+              {% if category.links and model in category.links %}
+                {% set href = category.links[model] %}
+                {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
+                <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
+              {% endif %}
+            </li>
           {% endfor %}
         </ul>
         <h3>Stochastic Models</h3>
         <ul>
           {% for model in category.stochastic_examples %}
-            <li>{{ model }}</li>
+            <li id="{{ model|lower|replace(' ', '-') }}">
+              {{ model }}
+              {% if category.links and model in category.links %}
+                {% set href = category.links[model] %}
+                {% set anchor = href.split('#')[-1].replace('-', ' ').title() %}
+                <div><a href="{{ href }}">Related: {{ anchor }}</a></div>
+              {% endif %}
+            </li>
           {% endfor %}
         </ul>
       </section>
