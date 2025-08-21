@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-from flask import Flask
+from flask import Flask, g
 from dotenv import load_dotenv
 
 from routes.data import bp as data_bp
@@ -19,7 +19,7 @@ from routes.api_datasets import bp as api_datasets_bp
 from routes.api_projects import bp as api_projects_bp
 from routes.api_dashboards import bp as api_dashboards_bp
 from ws import init_app as init_ws, socketio
-from models.db import Base, engine
+from models.db import Base, engine, SessionLocal
 
 # Ensure tables exist
 Base.metadata.create_all(bind=engine)
@@ -44,6 +44,23 @@ app.register_blueprint(api_dashboards_bp)
 init_ws(app)
 
 load_dotenv()
+
+
+def get_session():
+    """Return a scoped SQLAlchemy session for the current request."""
+
+    if "db" not in g:
+        g.db = SessionLocal()
+    return g.db
+
+
+@app.teardown_appcontext
+def remove_session(exc=None):
+    """Close the database session at the end of the request."""
+
+    session = g.pop("db", None)
+    if session is not None:
+        session.close()
 
 
 @app.route("/")
