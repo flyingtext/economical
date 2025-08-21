@@ -2,5 +2,39 @@
 
 {% block content %}
 <h1 class="text-2xl font-bold mb-4">Economical</h1>
-<p>Welcome to the Economical platform.</p>
+
+<section class="mb-6">
+  <h2 class="text-xl font-semibold mb-2">My Account Overview</h2>
+  {% if my_account_overview %}
+  <p>{{ my_account_overview }}</p>
+  {% else %}
+  <p class="text-gray-500">Overview unavailable.</p>
+  {% endif %}
+</section>
+
+<section class="mb-6">
+  <h2 class="text-xl font-semibold mb-2">Public Datasets</h2>
+  {% if datasets %}
+  <ul class="list-disc list-inside">
+    {% for ds in datasets %}
+    <li>{{ ds.name }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="text-gray-500">No public datasets available.</p>
+  {% endif %}
+</section>
+
+<section class="mb-6">
+  <h2 class="text-xl font-semibold mb-2">Public Models</h2>
+  {% if models %}
+  <ul class="list-disc list-inside">
+    {% for m in models %}
+    <li>{{ m.name }}</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="text-gray-500">No public models available.</p>
+  {% endif %}
+</section>
 {% endblock %}

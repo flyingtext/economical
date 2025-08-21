@@ -10,7 +10,16 @@
     <header class="bg-gray-800 text-white">
       <nav class="container mx-auto flex items-center justify-between p-4">
         <a href="/" class="text-lg font-bold">Economical</a>
-        <div class="space-x-4">
+        <div class="flex items-center space-x-4">
+          <div class="relative group">
+            <a href="#" class="hover:underline">Docs</a>
+            <div class="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg">
+              <span class="block px-4 py-2 font-semibold">Specification</span>
+              <a href="/docs/specification/my_account" class="block px-4 py-2 hover:bg-gray-200">My Account</a>
+              <a href="/docs/specification/dataset_catalog" class="block px-4 py-2 hover:bg-gray-200">Dataset Catalog</a>
+              <a href="/docs/specification/model_catalog" class="block px-4 py-2 hover:bg-gray-200">Model Catalog</a>
+            </div>
+          </div>
           {% if session.get('user') %}
           <a href="{{ url_for('my_account.dashboard') }}" class="hover:underline">My Account</a>
           {% else %}

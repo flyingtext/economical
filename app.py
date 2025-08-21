@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
+
 from flask import Flask, g, abort, render_template
 from dotenv import load_dotenv
 
@@ -20,8 +22,10 @@ from routes.admin import bp as admin_bp
 from routes.api_datasets import bp as api_datasets_bp
 from routes.api_projects import bp as api_projects_bp
 from routes.api_dashboards import bp as api_dashboards_bp
+from routes.docs import bp as docs_bp
 from ws import init_app as init_ws, socketio
 from models.db import Base, engine, SessionLocal
+from models import Dataset, Model
 
 # Ensure tables exist
 Base.metadata.create_all(bind=engine)
@@ -42,6 +46,7 @@ app.register_blueprint(admin_bp)
 app.register_blueprint(api_datasets_bp)
 app.register_blueprint(api_projects_bp)
 app.register_blueprint(api_dashboards_bp)
+app.register_blueprint(docs_bp)
 
 init_ws(app)
 
@@ -68,7 +73,31 @@ def remove_session(exc=None):
 def index(path: str) -> str:
     if path.startswith("api") or path.startswith("ws"):
         abort(404)
-    return render_template("index.html")
+    # Load My Account overview text from specification markdown
+    overview = ""
+    spec_path = Path("docs/specification/my_account.md")
+    try:
+        lines = spec_path.read_text(encoding="utf-8").splitlines()
+        start = lines.index("## 1. Screen Purpose") + 1
+        end = lines.index("---", start)
+        overview = " ".join(line.strip() for line in lines[start:end] if line.strip())
+    except Exception:
+        overview = ""
+
+    with SessionLocal() as session:
+        datasets = (
+            session.query(Dataset)
+            .filter(Dataset.visibility == "public")
+            .all()
+        )
+        models = session.query(Model).filter(Model.owner_type == "public").all()
+
+    return render_template(
+        "index.html",
+        my_account_overview=overview,
+        datasets=datasets,
+        models=models,
+    )
 
 
 if __name__ == "__main__":
