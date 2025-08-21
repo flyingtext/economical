@@ -1,97 +1,133 @@
-# 📂 Dataset Catalog — Screen Definition (v3)
+# Dataset Catalog Specification
 
-## 1. Purpose
+## 1. Overview
 
-The Dataset Catalog is the entry point for exploring datasets.
-It enables users to **search, filter, evaluate usage (models + API calls), and connect datasets** to their workflows.
-
----
-
-## 2. Layout Components
-
-### (A) Top Bar — Search & Filter
-
-* **Search Box**: full-text across title, description, tags, sources
-* **Filters**:
-
-  * Domain: Macroeconomics / Financial Markets / Industry / Demographics / Environment …
-  * Data Type: Time-series / Panel / Cross-section / GIS / Other
-  * Access Scope: Public / Team-only / Private
-  * Source: User Upload / API Integration / Zenodo / Other
-  * Last Update: Past 7 days / 30 days / 1 year / All
-* **Sorting Options**
-
-  * Most Recent Updates
-  * Most Popular (views + downloads)
-  * Highest API Usage
-  * Alphabetical
-  * Highest Rating
+* **Location**: Datasets → Dataset Catalog
+* **Purpose**: Centralized catalog to browse and manage datasets, separated into personal, team, and public scope.
+* **Primary Users**: Researchers, data managers, analysts
 
 ---
 
-### (B) Main Content — Dataset List/Grid
+## 2. Key Features
 
-* **Toggle**: Card view ↔ List view
-* **Dataset Item Components**
+1. **Tabbed Views**
 
-  * Thumbnail (preview or icon)
-  * Title + Short Description
-  * Tags / Keywords
-  * Latest Update Date
-  * Record Count & Coverage (e.g., “1990–2024, 15k rows”)
-  * Access Scope (Public / Team / Private)
-  * **Usage Metrics**
+   * **My Datasets**: Created or owned by the logged-in user
+   * **Team Datasets**: Shared datasets accessible to user’s teams
+   * **Public Datasets**: Datasets shared openly across the platform
 
-    * 🔗 Linked Models Count (e.g., “Used in 5 Models”)
-    * 📡 API Requests (e.g., “12.4k calls this month”)
-    * 👀 Views / Downloads
-  * Community Indicators: 👍 Likes, ⭐ Ratings, 💬 Comments
-  * **Action Buttons**
+2. **List/Grid View Toggle**
 
-    * **\[View Details]** → navigates to **Dataset Detail page**
-    * **\[Use Now]** → opens **modal** (choose Project/Model to link dataset)
+   * Default: list view with metadata summary
+   * Option to switch to grid (card) view
 
----
+3. **Dataset Summary Card/List Item**
 
-### (C) \[Use Now] Modal
+   * Dataset name
+   * Version info (latest / multiple versions)
+   * Schema preview (columns, types, units)
+   * Source & Citation info (e.g., DOI, URL, BibTeX availability)
+   * Usage statistics (downloads, linked models, views)
+   * Community metrics (likes, comments, shares)
+   * Last updated timestamp
 
-* **Title**: “Select Target for Dataset”
-* **Options**:
+4. **Dataset Showcase Status (inline indicators)**
 
-  * Project List (user/team projects)
-  * Model List (available models)
-  * Search/Filter inside modal for quick navigation
-* **Confirm Button**: \[Link Dataset]
-* **Cancel Button**: \[Close]
+   * **Versioning**: current vs total versions
+   * **Update frequency**: manual / automated (cron updates)
+   * **Data quality indicators** (optional): completeness %, last validation check
 
----
+5. **Search & Filter**
 
-### (D) Right-side Panel
+   * Search by dataset name, tags, keywords
+   * Filters:
 
-* Favorites (starred datasets)
-* Recently Viewed
-* Recommended Datasets (based on popularity/API activity)
+     * Dataset type (time series, panel, spatial, text, etc.)
+     * Source (uploaded, external URL/API, imported from Zenodo)
+     * Update status (latest only, historical versions)
+     * Visibility (My / Team / Public)
+     * Tags (discipline: finance, epidemiology, climate, etc.)
 
----
+6. **Sorting Options**
 
-### (E) Footer
+   * Newest / Recently updated
+   * Most used (linked models, downloads)
+   * Most popular (likes, shares)
 
-* Pagination or Infinite Scroll
-* Export current list (CSV / JSON)
+7. **Quick Actions**
 
----
-
-## 3. Key Features
-
-1. **Discovery**: search, filter, and sort by update, popularity, API load, etc.
-2. **Usage Transparency**: show dataset adoption (linked models) + API traffic.
-3. **Workflow Integration**:
-
-   * \[Use Now] opens modal → user selects **Project/Model** to connect dataset.
-   * \[View Details] leads to **Dataset Detail page** (Overview, Schema, Source, Versions, Usage, Community…).
-4. **Community Engagement**: likes, ratings, comments visible in Catalog.
-5. **Export**: save filtered dataset metadata + usage metrics.
+   * “View Detail” → Dataset Detail page
+   * “Link to Model” (if permission)
+   * “Export” (CSV/JSON, Zenodo publish if available)
+   * “Favorite” (bookmarking)
 
 ---
 
-⚡ With this design, the **Catalog works like a dataset marketplace**, while the **modal ensures direct workflow integration** without losing context.
+## 3. UI Components
+
+### Header
+
+* Page title: **Dataset Catalog**
+* Tabs: `My Datasets | Team Datasets | Public Datasets`
+* Global search bar
+* Sort dropdown
+* Filter button
+
+### Main Content (List View)
+
+* Each row/card includes:
+
+  * Dataset Name
+  * Version status
+  * Schema preview (sample columns)
+  * Source & Citation
+  * Usage metrics (downloads, linked models, views)
+  * Community metrics (likes, comments)
+  * Updated timestamp
+  * Quick Actions (View, Link, Export, Favorite)
+
+### Sidebar (optional)
+
+* Quick Filters (dataset type, update status, source)
+* Recently Viewed Datasets
+* Zenodo shortcuts (if user linked Zenodo account)
+
+---
+
+## 4. Data Schema (simplified)
+
+| Field Name         | Type      | Description                        |
+| ------------------ | --------- | ---------------------------------- |
+| dataset\_id        | string    | Unique dataset ID                  |
+| dataset\_name      | string    | Dataset name                       |
+| version            | string    | Current version                    |
+| schema\_preview    | object\[] | Example of columns/types/units     |
+| source\_info       | string    | Source/citation reference          |
+| usage\_stats       | object    | {downloads, linked\_models, views} |
+| community\_metrics | object    | {likes, comments, shares}          |
+| update\_status     | string    | Manual / Automated (cron)          |
+| visibility         | string    | My / Team / Public                 |
+| owner\_id          | string    | User who created dataset           |
+| team\_id           | string    | Team identifier                    |
+| updated\_at        | datetime  | Last update timestamp              |
+
+---
+
+## 5. Permissions
+
+* **Read**: based on visibility (My / Team / Public)
+* **Export**: dataset owner, team members (if team-owned), or public (if allowed)
+* **Link to Model**: dataset owner / team editors
+* **Edit/Delete**: dataset owner / team admins
+
+---
+
+## 6. Example User Flow
+
+1. User enters **Dataset Catalog** page
+2. Chooses tab: *My Datasets / Team Datasets / Public Datasets*
+3. Uses filters (e.g., only time-series datasets, public, updated recently)
+4. Sees list with version & usage info inline
+5. Clicks a dataset → goes to Dataset Detail page
+6. Optionally links dataset to a model or exports data
+
