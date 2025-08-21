@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Project Catalog</h1>
-<p>List of projects will appear here.</p>
+<div id="project-list" class="grid gap-4"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/projects.js') }}"></script>
 {% endblock %}

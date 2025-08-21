@@ -17,6 +17,9 @@ from routes.dashboards import bp as dashboards_bp
 from routes.community import bp as community_bp
 from routes.notifications import bp as notifications_bp
 from routes.admin import bp as admin_bp
+from routes.api_datasets import bp as api_datasets_bp
+from routes.api_projects import bp as api_projects_bp
+from routes.api_dashboards import bp as api_dashboards_bp
 from services.data_ingestion import cache_series, fetch_remote_series
 from ws import init_app as init_ws, socketio
 from models.db import Base, engine
@@ -37,6 +40,9 @@ app.register_blueprint(dashboards_bp)
 app.register_blueprint(community_bp)
 app.register_blueprint(notifications_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(api_datasets_bp)
+app.register_blueprint(api_projects_bp)
+app.register_blueprint(api_dashboards_bp)
 
 init_ws(app)
 
