@@ -1,82 +1,165 @@
 # Economical
 
-This project has evolved into a small **financial model playground** built
-with Flask and a minimal HTML front‑end. It demonstrates a complete
-workflow for experimenting with economic time series:
+**Economical** is an open-source research platform for building, validating, and publishing **economic and financial models**.
+It provides an end-to-end workflow from **model fitting & solving → backtesting → publication to Zenodo (DOI issued)**, with dataset management and collaborative features.
 
-1. **Collect real market data** using the Yahoo Finance API.
-2. **Transform the raw series** into modelling variables such as
-   percentage returns.
-3. **Fit a simple autoregressive model** to the processed data.
-4. **Validate the model** on recent observations to check how well it
-   captures reality.
+[GitHub Repository](https://github.com/flyingtext/economical)
+[Zenodo Community](https://zenodo.org/communities/economical)
 
-The original API for serving cached time series is still available and a
-new web form at `/model` drives the modelling pipeline.
+---
 
-## Model Categories
+## ✨ Key Features
 
-The modelling playground groups examples into five categories:
+### 1. Models
 
-1. **Economics** – Models and indicators related to economic trends.
-2. **Finance** – Financial modelling techniques for assets and risk.
-3. **Statistics** – General statistical tools used across domains.
-4. **Machine Learning** – Data‑driven algorithms for pattern finding and prediction.
-5. **Optimization** – Approaches for selecting best outcomes under constraints.
+* **Model Builder**
 
-All category metadata lives in [`routes/categories.py`](routes/categories.py)
-within the `CATEGORIES` dictionary. Each entry defines the name,
-description, example models and optional links to related topics.
+  * Create, edit, and manage models (PDE/ODE, time-series, agent-based, etc.)
+  * Define parameters, equations, and simulation settings
+  * Backtesting with customizable templates
+  * Prediction scheduling and validation reports
 
-The helper that exposes these definitions uses a small in-process LRU
-cache to avoid rebuilding the list for every request. This lightweight
-approach can be swapped out for a more robust cache if the data grows or
-becomes dynamic.
+* **Model Detail Pages**
 
-To add a category, extend `CATEGORIES` with a new definition following the
-existing structure. Icons for categories can be placed in
-[`static/icons/`](static/icons) (create the directory if necessary) using the
-category's slug as the filename (e.g. `finance.svg`).
+  * Overview / Equations / Parameters
+  * Validation & Backtesting Reports
+  * Prediction Schedules
+  * Export & Publish (Zenodo integration)
 
-## Setup
+---
 
-1. **Install dependencies**
+### 2. Datasets
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+* **Dataset Builder**
 
-2. **Configure environment**
+  * Define schema (columns, types, units)
+  * Manage sources & citations (BibTeX, URL, upload log)
+  * Import data (CSV, JSON, API binding)
+  * Version control & update logs
+  * Access permissions & visibility
 
-   Copy the example configuration and adjust as needed:
+* **Dataset Detail Pages**
 
-   ```bash
-   cp .env.example .env
-   ```
+  * Overview
+  * Schema
+  * Source & Citation
 
-   The application recognises the following variables:
+---
 
-   | Variable | Description | Default |
-   | --- | --- | --- |
-   | `SERIES_SOURCE` | Base URL of the data source | `https://example.com/api` |
-   | `SERIES_SYMBOL` | Identifier for the requested series | `demo` |
-   | `SERIES_START` | Start date (`YYYY-MM-DD`) | `2000-01-01` |
-   | `SERIES_END` | End date (`YYYY-MM-DD`) | current date |
+### 3. Publication Workflow (Zenodo Integration)
 
-3. **Run the service**
+* Directly publish **model results** and **datasets** to [Zenodo](https://zenodo.org/)
+* DOI automatically assigned for reproducible research
+* Auto-generated export package:
 
-   ```bash
-   python app.py
-   ```
+  ```
+  /export/
+    ├─ model_overview.md        # Model description & equations
+    ├─ data.csv                 # Dataset used for fitting/backtesting
+    ├─ fitting_results.json     # Parameters & residual analysis
+    ├─ backtesting_report.html  # Visualization report
+  ```
 
-   The service exposes a health check at `/`, cached data under
-   `/api/data/<series_id>` and an interactive modelling playground at
-   `/model`.
+---
 
-## Development
+### 4. Team & Collaboration
 
-The codebase also contains utilities for applying database migrations and registering per-user MySQL databases. These utilities are not invoked during normal execution but can be used as hooks for a broader application.
+* Individual and team workspaces
+* Role-based permissions (Contributor, Maintainer, Admin)
+* Team settings: members, policies, usage & credits
+* Export & backup history
+* Publication history (personal/team Zenodo uploads)
 
-## License
+---
 
-This project is licensed under the MIT License.
+### 5. Community & Wiki
+
+* Public catalog of models and datasets
+* Wiki integration: [Spacetime](https://spacetime.click)
+* Structured citations & external link monitoring
+* Automatic language toggle (EN/KR/JP)
+* Document statistics (views, trends)
+
+---
+
+## 🗂 Sitemap (Simplified)
+
+```text
+1. Auth / Account
+   - Login / Signup / My Account (profile, preferences, Zenodo uploads)
+
+2. Team Settings
+   - Members & Roles / Usage & Credits / Publication history
+
+3. Models
+   - Model Catalog / Builder / Detail (overview, validation, schedules)
+
+4. Datasets
+   - Dataset Catalog / Builder / Detail (schema, sources, versions)
+
+5. Community
+   - Public Models & Datasets
+   - Wiki & Documentation
+```
+
+---
+
+## 🛠 Tech Stack
+
+* **Frontend**: React, Tailwind, shadcn/ui
+* **Backend**: Python (Flask/FastAPI), SQLite/PostgreSQL
+* **Visualization**: Deck.gl / Leaflet, Recharts, D3.js
+* **Integration**: Zenodo API, GitHub Actions for automation
+* **Search & Indexing**: Full-text search + citation monitoring
+
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/flyingtext/economical.git
+cd economical
+pip install -r requirements.txt
+```
+
+Run local server:
+
+```bash
+python run.py
+```
+
+---
+
+## 🔗 Zenodo Community
+
+All published models and datasets are curated at:
+👉 [https://zenodo.org/communities/economical](https://zenodo.org/communities/economical)
+
+Curation policy: submissions exported via `economical.click` are **reviewed before inclusion**.
+
+---
+
+## 📜 License
+
+MIT License.
+See [LICENSE](./LICENSE) for details.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please check:
+
+* [roles\_matrix.md](./docs/roles_matrix.md) for role definitions
+* [model\_builder.md](./docs/model_builder.md) and [dataset\_builder.md](./docs/dataset_builder.md) for specifications
+
+---
+
+## 👤 Maintainer
+
+**JiHyeon Yoon (윤지현)**
+
+* ✉️ Email: [somehowme@gmail.com](mailto:somehowme@gmail.com) / [flyingtext@nate.com](mailto:flyingtext@nate.com) / [flyingtext@hotmail.com](mailto:flyingtext@hotmail.com)
+* 🌐 GitHub: [flyingtext](https://github.com/flyingtext)
+* 📝 Blog: [j.writings.cloud](https://j.writings.cloud) / [k.writings.cloud](https://k.writings.cloud)
+
