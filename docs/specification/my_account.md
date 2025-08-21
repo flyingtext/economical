@@ -27,6 +27,7 @@ Provide users with a centralized hub to manage their personal profile, security,
   - Email (read-only, with verification badge)
   - Contact Info (phone, secondary email)
   - Profile Picture (upload/change)
+  - Current Role: **Owner / Admin / Member / Viewer** (read-only, inherited from team settings)
 - **Actions**
   - Save Changes
 - **States**
@@ -46,8 +47,7 @@ Provide users with a centralized hub to manage their personal profile, security,
     - List of keys (masked, last 4 chars visible)
     - Generate new key
     - Revoke existing key
-  - Optional 2FA toggle (if enabled by system policy)
-- **Security**
+- **Notes**
   - All sensitive actions require re-authentication
 
 ---
@@ -88,3 +88,45 @@ Provide users with a centralized hub to manage their personal profile, security,
   - Line graph of monthly balance
   - Table of detailed transactions
 
+---
+
+## Example Wireframe (Text-based)
+
+```
+
+---
+
+| \[Economical Logo]        My Account                        |                 |             |        |
+| ----------------------------------------------------------- | --------------- | ----------- | ------ |
+| Tabs: Profile                                               | Security        | Preferences | Backup |
+| & Export                                                    | Credits & Usage |             |        |
+| -------------------------------------------------           |                 |             |        |
+| \[Active Tab Content]                                       |                 |             |        |
+|                                                             |                 |             |        |
+| Example: Profile Tab                                        |                 |             |        |
+| Name:  \[\_\_\_\_\_\_\_\_\_\_\_]                            |                 |             |        |
+| Email: [user@email.com](mailto:user@email.com) (✓ Verified) |                 |             |        |
+| Phone: \[\_\_\_\_\_\_\_\_\_\_\_]                            |                 |             |        |
+| Picture: \[Upload]                                          |                 |             |        |
+| Role: Member (Read-only)                                    |                 |             |        |
+| \[ Save Changes ]                                           |                 |             |        |
+
+---
+
+```
+
+---
+
+## Accessibility
+- Tabs navigable via keyboard
+- Clear ARIA roles for tab panels
+- Screen reader announces active tab
+- High-contrast friendly design
+
+---
+
+## Security
+- All updates via HTTPS
+- Password/API key updates require re-authentication
+- Export/download links expire after 24h
+- Sensitive data never shown in plain text
