@@ -11,7 +11,8 @@ from routes.model import bp as model_bp
 from routes.categories import bp as categories_bp
 from services.data_ingestion import cache_series, fetch_remote_series
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static", static_url_path="/static")
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 31536000
 app.register_blueprint(data_bp)
 app.register_blueprint(model_bp)
 app.register_blueprint(categories_bp)
