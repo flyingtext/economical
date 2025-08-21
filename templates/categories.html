@@ -8,6 +8,7 @@
     <h1>Categories</h1>
     {% for category in categories %}
       <section>
+        <img src="{{ url_for('static', filename='icons/' ~ category.name|lower ~ '.svg') }}" alt="{{ category.name }} icon">
         <h2>{{ category.name }}</h2>
         <p>{{ category.description }}</p>
         <h3>Deterministic Models</h3>
