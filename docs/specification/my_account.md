@@ -22,20 +22,17 @@ It provides access to user profile, security settings, preferences, export logs,
 ## 3. Sub-Screens
 
 ### 3.1 Profile
-
-* **Profile Info**
-
-  * Name
-  * Email (primary, verified/unverified)
-  * Affiliation / Institution
-  * Role (User / Researcher / Admin, etc.)
-  * Profile Picture
-  * ORCID iD (optional, format: `0000-0002-1825-0097`)
-* **Actions**
-
-  * \[Edit Profile]
-  * \[Change Picture]
-  * \[Delete Account] (with warning modal)
+- **Profile Info**
+  - Name
+  - Email (primary, verified/unverified)
+  - Affiliation / Institution
+  - Role (Viewer / Contributor / Owner / Admin)
+  - Profile Picture
+  - ORCID iD (optional, format: `0000-0002-1825-0097`)
+- **Actions**
+  - [Edit Profile]  
+  - [Change Picture]  
+  - [Delete Account] (with warning modal)
 
 ---
 

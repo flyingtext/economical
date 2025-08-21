@@ -90,10 +90,10 @@
 
 ## 6. Permissions
 
-* Viewer: can only see **Public posts/discussions**
-* Team Member: can see **Team activity** in My Activity tab
-* Author: can edit/delete own posts
-* Admin: full moderation rights
+* **Viewer** – can only see **public posts and discussions**
+* **Contributor** – can create posts, participate in discussions, and view **team activity**
+* **Owner** – can moderate own or team content
+* **Admin** – full moderation rights
 
 ---
 

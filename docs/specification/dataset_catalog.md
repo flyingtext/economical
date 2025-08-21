@@ -115,10 +115,10 @@
 
 ## 5. Permissions
 
-* **Read**: based on visibility (My / Team / Public)
-* **Export**: dataset owner, team members (if team-owned), or public (if allowed)
-* **Link to Model**: dataset owner / team editors
-* **Edit/Delete**: dataset owner / team admins
+* **Viewer** – read access based on visibility (My / Team / Public)
+* **Contributor** – can export and link datasets they own or team datasets
+* **Owner** – can edit, delete, and manage links for their datasets
+* **Admin** – manage all datasets
 
 ---
 

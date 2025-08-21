@@ -39,7 +39,7 @@ Allow users to manage their team, invite members, assign roles, configure permis
 - **Member List Table**
   - Name
   - Email
-  - Role (Owner / Admin / Member / Viewer)
+  - Role (Viewer / Contributor / Owner / Admin)
   - Join Date
   - Status (Active / Pending Invite)
 - **Actions**
@@ -47,10 +47,10 @@ Allow users to manage their team, invite members, assign roles, configure permis
   - Remove Member
   - Change Role
 - **Role Presets**
-  - **Owner**: Full control of the team and all resources
-  - **Admin**: Manage members, datasets, models
-  - **Member**: Create/edit datasets and models
-  - **Viewer**: Read-only access
+  - **Viewer** – Read-only, can only access public resources
+  - **Contributor** – Regular user, can create and edit own resources, and contribute to team resources
+  - **Owner** – Resource or team owner, can manage visibility, roles, and publication
+  - **Admin** – Platform-wide privileges, can manage all users, teams, and resources
 
 ---
 

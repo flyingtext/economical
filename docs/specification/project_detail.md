@@ -67,7 +67,7 @@
 
 ### 4) Team Members
 
-* **Members list** with role (Owner, Editor, Viewer)
+* **Members list** with role (Viewer, Contributor, Owner, Admin)
 * Columns: User name, role, joined date
 * Actions: \[Add Member], \[Change Role], \[Remove]
 * Visual: avatars for team members
@@ -102,10 +102,10 @@
 
 ## 6. Permissions
 
-* Viewer: read-only
-* Editor: can edit description, add/remove models/datasets, manage team
-* Owner: full access + publication/export rights
-* Admin: override permissions
+* **Viewer** – read-only
+* **Contributor** – edit descriptions, add/remove models and datasets, and manage team participation
+* **Owner** – full access with publication and export rights
+* **Admin** – override permissions and manage all projects
 
 ---
 

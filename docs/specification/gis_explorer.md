@@ -124,10 +124,10 @@
 
 ## 7. Permissions
 
-* Viewer: can see only **public map views**
-* Team Member: can add team datasets/models as layers
-* Owner: full control, can save/share
-* Admin: manage all saved views
+* **Viewer** – can see only **public map views**
+* **Contributor** – can add team datasets/models as layers
+* **Owner** – full control, can save/share and manage visibility
+* **Admin** – manage all saved views
 
 ---
 

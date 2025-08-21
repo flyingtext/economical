@@ -75,7 +75,7 @@ It encourages collaboration and transparency by letting users comment, rate, and
   - action_type (post/comment/rating/like)
   - performed_by (user_id)
   - timestamp
-- Admin/Owner can delete/flag inappropriate content
+- Owners and Admins can delete or flag inappropriate content
 
 ---
 

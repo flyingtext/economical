@@ -103,9 +103,10 @@
 
 ## 5. Permissions
 
-* **Read**: Public models visible to all users
-* **Team-only models**: Restricted to team members
-* **Manage links**: Only dataset owners / team admins can “Add / Unlink” models
+* **Viewer** – can view public models
+* **Contributor** – can view team-only models for teams they belong to
+* **Owner** – can add or unlink models
+* **Admin** – can manage all linked models
 
 ---
 

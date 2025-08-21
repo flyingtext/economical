@@ -72,10 +72,10 @@
 
 ## 7. Permissions
 
-* Viewer: Public dashboards only
-* Team Member: My + Team dashboards
-* Owner/Editor: edit own dashboards
-* Admin: manage all
+* **Viewer** – access public dashboards only
+* **Contributor** – access own and team dashboards
+* **Owner** – edit and manage visibility for own dashboards
+* **Admin** – manage all dashboards
 
 ---
 
