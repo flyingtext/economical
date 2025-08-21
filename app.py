@@ -80,7 +80,11 @@ def index(path: str) -> str:
             .filter(Dataset.visibility == "public")
             .all()
         )
-        models = session.query(Model).filter(Model.owner_type == "public").all()
+        models = (
+            session.query(Model)
+            .filter(Model.visibility == "public")
+            .all()
+        )
 
     return render_template(
         "index.html",

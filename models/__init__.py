@@ -91,6 +91,7 @@ class Model(Base):
     name = Column(String(255), nullable=False)
     description = Column(String, nullable=False)
     model_type = Column(String(50), nullable=False)
+    visibility = Column(String(50), default="private")
     owner_id = Column(String(36), nullable=False)
     owner_type = Column(String(50))
     created_at = Column(DateTime, default=datetime.utcnow)
