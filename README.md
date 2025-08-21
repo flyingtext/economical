@@ -1,5 +1,9 @@
 # Economical
 
+![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square) ![Status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat-square) ![Python](https://img.shields.io/badge/python-3.11+-yellow.svg?style=flat-square) ![Maintainer](https://img.shields.io/badge/maintainer-JiHyeon%20Yoon-lightgrey.svg?style=flat-square) ![GitHub stars](https://img.shields.io/github/stars/flyingtext/economical?style=flat-square) ![Last commit](https://img.shields.io/github/last-commit/flyingtext/economical?style=flat-square) ![GitHub issues](https://img.shields.io/github/issues/flyingtext/economical?style=flat-square) ![GitHub closed issues](https://img.shields.io/github/issues-closed/flyingtext/economical?style=flat-square)
+
+**Reproducible research in economic modeling, for all kinds of science.**
+
 **Economical** is an open-source research platform for building, validating, and publishing **economic and financial models**.
 It provides an end-to-end workflow from **model fitting & solving → backtesting → publication to Zenodo (DOI issued)**, with dataset management and collaborative features.
 
@@ -155,6 +159,84 @@ We welcome contributions! Please check:
 
 ---
 
+## 📄 Citation
+
+*in development*
+
+Once a stable release is published and DOI is issued via [Zenodo](https://zenodo.org/communities/economical), you may cite this project as follows:
+
+**APA (7th edition):**
+
+```
+Yoon, J. (2025). Economical: An open-source platform for economic modeling and reproducible research (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.xxxxxxx
+```
+
+```
+Yoon, J. (2025). Economical: An open-source platform for economic and financial modeling, with reproducible research (Version 1.0.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.xxxxxxx
+```
+
+**MLA (9th edition):**
+
+```
+Yoon, JiHyeon. *Economical: An Open-Source Platform for Economic Modeling and Reproducible Research*. Version 1.0.0, 2025, Zenodo, https://doi.org/10.5281/zenodo.xxxxxxx.
+```
+
+```
+Yoon, JiHyeon. *Economical: An Open-Source Platform for Economic and Financial Modeling, with Reproducible Research*. Version 1.0.0, 2025, Zenodo, https://doi.org/10.5281/zenodo.xxxxxxx.
+```
+
+**BibTeX:**
+
+```bibtex
+@software{yoon2025economical,
+  author       = {Yoon, JiHyeon},
+  title        = {Economical: An open-source platform for economic modeling and reproducible research},
+  version      = {1.0.0},
+  year         = {2025},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.xxxxxxx},
+  url          = {https://doi.org/10.5281/zenodo.xxxxxxx}
+}
+```
+
+```bibtex
+@software{yoon2025economical_financial,
+  author       = {Yoon, JiHyeon},
+  title        = {Economical: An open-source platform for economic and financial modeling, with reproducible research},
+  version      = {1.0.0},
+  year         = {2025},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.xxxxxxx},
+  url          = {https://doi.org/10.5281/zenodo.xxxxxxx}
+}
+```
+
+---
+
+## 🚧 Roadmap
+
+* [ ] Stable release (v1.0.0)
+* [ ] Zenodo DOI integration
+* [ ] Extended model types (agent-based, PDE/ODE, etc.)
+* [ ] Community features (stats, multilingual support)
+
+---
+
+## 🙏 Acknowledgements
+
+* Inspired by open scientific communities such as **Zenodo** and **Kaggle**
+* Documentation and design assisted by **OpenAI ChatGPT & Codex**
+* Built with modern open-source tools: **Python, React, Tailwind, Flask/FastAPI**
+
+---
+
+## 💡 Funding & Sustainability
+
+Economical is currently maintained as a **non-commercial community project**.
+Future development may be supported via **grants, academic collaborations, or research funding**.
+
+---
+
 ## 👤 Maintainer
 
 **JiHyeon Yoon (윤지현)**
@@ -169,4 +251,3 @@ We welcome contributions! Please check:
 * Project lead & system design by JiHyeon Yoon
 * Built with: Python, React, Tailwind, Flask/FastAPI
 * Assisted by: OpenAI ChatGPT & Codex (prompt-driven development support)
-
