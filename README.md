@@ -28,6 +28,11 @@ All category metadata lives in [`routes/categories.py`](routes/categories.py)
 within the `CATEGORIES` dictionary. Each entry defines the name,
 description, example models and optional links to related topics.
 
+The helper that exposes these definitions uses a small in-process LRU
+cache to avoid rebuilding the list for every request. This lightweight
+approach can be swapped out for a more robust cache if the data grows or
+becomes dynamic.
+
 To add a category, extend `CATEGORIES` with a new definition following the
 existing structure. Icons for categories can be placed in
 [`static/icons/`](static/icons) (create the directory if necessary) using the
