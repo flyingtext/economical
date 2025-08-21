@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import os
-from flask import Flask, g
+from flask import Flask, g, abort, render_template
 from dotenv import load_dotenv
+
+load_dotenv()
 
 from routes.data import bp as data_bp
 from routes.model import bp as model_bp
@@ -43,8 +45,6 @@ app.register_blueprint(api_dashboards_bp)
 
 init_ws(app)
 
-load_dotenv()
-
 
 def get_session():
     """Return a scoped SQLAlchemy session for the current request."""
@@ -63,10 +63,15 @@ def remove_session(exc=None):
         session.close()
 
 
-@app.route("/")
-def index() -> str:
-    return "Service is running"
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def index(path: str) -> str:
+    if path.startswith("api") or path.startswith("ws"):
+        abort(404)
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
-    socketio.run(app)
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host=host, port=port)
