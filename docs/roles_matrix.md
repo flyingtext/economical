@@ -1,121 +1,129 @@
-# Role Matrix — Screen Definition
+# Roles Matrix
 
-## 1. Roles
-- **Owner**: Resource creator (personal or team)  
-- **Admin**: Team administrator, has elevated control over team-owned resources  
-- **Contributor**: Team member with rights to add/use resources, limited management  
-- **Viewer**: Read-only access to resources  
+## 1. Roles Defined
 
----
-
-## 2. Auth / Account
-| Function                  | Owner | Admin | Contributor | Viewer |
-|----------------------------|-------|-------|-------------|--------|
-| View / Edit Profile        | ✅    | -     | -           | -      |
-| Security Settings          | ✅    | -     | -           | -      |
-| Preferences                | ✅    | -     | -           | -      |
-| View Export Logs (Personal)| ✅    | -     | -           | -      |
-| View Export Logs (Team)    | -     | ✅    | ✅ (own)    | ❌     |
-| View Publication History   | ✅    | ✅    | ✅          | ❌     |
+* **Viewer** – Read-only, can only access **public resources**.
+* **Contributor** – Regular user, can **create and edit own resources**, and contribute to team resources.
+* **Owner** – Resource or team owner, can **manage visibility, roles, and publication**.
+* **Admin** – Platform-wide privileges, can manage **all users, teams, and resources**.
 
 ---
 
-## 3. Team Settings
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| Edit General Info                 | ✅    | ✅    | ❌          | ❌     |
-| Manage Members & Roles            | ✅    | ✅    | ❌          | ❌     |
-| Invite / Remove Members           | ✅    | ✅    | ❌          | ❌     |
-| Edit Resource Policies            | ✅    | ✅    | ❌          | ❌     |
-| View Usage & Credits              | ✅    | ✅    | ✅          | ✅     |
-| Purchase Credits                  | ✅    | ✅    | ❌          | ❌     |
-| View Export Logs                  | ✅    | ✅    | ✅ (own)    | ❌     |
-| Retry/Cancel Exports              | ✅    | ✅    | ❌          | ❌     |
-| View Publication History          | ✅    | ✅    | ✅          | ❌     |
-| Retry DOI Sync (Zenodo)           | ✅    | ✅    | ❌          | ❌     |
+## 2. Role Permissions by Section
+
+### Auth / Account
+
+| Feature                                     | Viewer | Contributor | Owner        | Admin   |
+| ------------------------------------------- | ------ | ----------- | ------------ | ------- |
+| Login / Signup / Reset Password             | ✅      | ✅           | ✅            | ✅       |
+| My Account (Profile, Security, Preferences) | –      | ✅ (own)     | ✅ (own)      | ✅ (all) |
+| Exports & Backups                           | –      | ✅ (own)     | ✅ (own/team) | ✅ (all) |
+| Publication History (Zenodo uploads)        | –      | ✅ (own)     | ✅ (own/team) | ✅ (all) |
 
 ---
 
-## 4. Datasets
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| View Overview / Schema / Source   | ✅    | ✅    | ✅          | ✅     |
-| View Versions / Usage / Community | ✅    | ✅    | ✅          | ✅     |
-| View API Access / Publications    | ✅    | ✅    | ✅          | ✅     |
-| **Use Now (link dataset)**        | ✅    | ✅    | ✅          | ❌     |
-| **Export (Personal)**             | ✅    | ❌    | ❌          | ❌     |
-| **Export (Team)**                 | ✅    | ✅    | ⭕ (policy) | ❌     |
-| Edit Metadata                     | ✅    | ✅    | ❌          | ❌     |
-| Delete Dataset                    | ✅    | ✅    | ❌          | ❌     |
+### Team Settings
+
+| Feature                           | Viewer | Contributor   | Owner | Admin |
+| --------------------------------- | ------ | ------------- | ----- | ----- |
+| View team info                    | –      | ✅             | ✅     | ✅     |
+| Edit team settings                | –      | –             | ✅     | ✅     |
+| Manage members & roles            | –      | –             | ✅     | ✅     |
+| Resource policies, usage, credits | –      | –             | ✅     | ✅     |
+| Exports & backups                 | –      | –             | ✅     | ✅     |
+| Team publication history          | –      | ✅ (view only) | ✅     | ✅     |
 
 ---
 
-## 5. Models
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| View Overview / Results / Reports | ✅    | ✅    | ✅          | ✅     |
-| View Scenarios / Versions         | ✅    | ✅    | ✅          | ✅     |
-| Link Dataset                      | ✅    | ✅    | ✅          | ❌     |
-| Run Validation / Backtesting      | ✅    | ✅    | ✅          | ❌     |
-| Schedule Predictions              | ✅    | ✅    | ✅          | ❌     |
-| Export Results                    | ✅    | ✅    | ⭕ (policy) | ❌     |
-| Edit Model Metadata               | ✅    | ✅    | ❌          | ❌     |
-| Delete Model                      | ✅    | ✅    | ❌          | ❌     |
+### Datasets
+
+| Feature                                                                         | Viewer          | Contributor         | Owner                | Admin   |
+| ------------------------------------------------------------------------------- | --------------- | ------------------- | -------------------- | ------- |
+| Dataset Catalog                                                                 | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned)        | ✅ (all) |
+| Dataset Builder (create/edit)                                                   | –               | ✅ (own/team)        | ✅ (own/team)         | ✅       |
+| Dataset Detail (overview, schema, source, versions, usage, API, related models) | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned)        | ✅       |
+| Community (comments, posts)                                                     | ✅ (public)      | ✅ (all joined)      | ✅                    | ✅       |
+| Publication History (Zenodo DOIs)                                               | –               | ✅ (view/export own) | ✅ (team/publication) | ✅ (all) |
 
 ---
 
-## 6. Projects
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| View Project Overview             | ✅    | ✅    | ✅          | ✅     |
-| Link Models / Datasets            | ✅    | ✅    | ✅          | ❌     |
-| View Activity Logs                | ✅    | ✅    | ✅          | ✅     |
-| Export Project Reports            | ✅    | ✅    | ⭕ (policy) | ❌     |
-| Edit Project Info                 | ✅    | ✅    | ❌          | ❌     |
-| Delete Project                    | ✅    | ✅    | ❌          | ❌     |
+### Models
+
+| Feature                                                                                       | Viewer          | Contributor         | Owner                | Admin   |
+| --------------------------------------------------------------------------------------------- | --------------- | ------------------- | -------------------- | ------- |
+| Model Catalog                                                                                 | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned)        | ✅ (all) |
+| Model Builder (create/edit)                                                                   | –               | ✅ (own/team)        | ✅ (own/team)         | ✅       |
+| Model Detail (overview, results, validation, predictions, scenarios, versions, API, datasets) | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned)        | ✅       |
+| Community (comments, posts)                                                                   | ✅ (public)      | ✅ (all joined)      | ✅                    | ✅       |
+| Publication History (Zenodo DOIs)                                                             | –               | ✅ (own export)      | ✅ (team/publication) | ✅ (all) |
 
 ---
 
-## 7. Dashboards
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| View Dashboard                    | ✅    | ✅    | ✅          | ✅     |
-| Edit Layout & Widgets             | ✅    | ✅    | ✅          | ❌     |
-| Share Dashboard                   | ✅    | ✅    | ✅          | ❌     |
-| Manage Permissions                | ✅    | ✅    | ❌          | ❌     |
+### Projects
+
+| Feature                                                                        | Viewer          | Contributor         | Owner                | Admin   |
+| ------------------------------------------------------------------------------ | --------------- | ------------------- | -------------------- | ------- |
+| Project Catalog                                                                | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned)        | ✅ (all) |
+| Project Builder (create/edit)                                                  | –               | ✅ (own/team)        | ✅ (own/team)         | ✅       |
+| Project Detail (overview, linked models/datasets, members, logs, publications) | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned)        | ✅       |
+| Publication History (Zenodo DOIs)                                              | –               | ✅ (own export)      | ✅ (team/publication) | ✅ (all) |
 
 ---
 
-## 8. Community
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| View Global Feed / Discussions    | ✅    | ✅    | ✅          | ✅     |
-| Post / Comment / Like             | ✅    | ✅    | ✅          | ❌     |
-| Rate Dataset / Model              | ✅    | ✅    | ✅          | ❌     |
-| Moderate (delete posts/comments)  | -     | ✅    | ❌          | ❌     |
+### Dashboards
+
+| Feature                                                         | Viewer          | Contributor         | Owner         | Admin   |
+| --------------------------------------------------------------- | --------------- | ------------------- | ------------- | ------- |
+| Dashboard Catalog                                               | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned) | ✅ (all) |
+| Dashboard Builder (create/edit)                                 | –               | ✅ (own/team)        | ✅ (own/team)  | ✅       |
+| Dashboard Detail (overview, layout, widgets, permissions, logs) | ✅ (public only) | ✅ (own/team/public) | ✅ (all owned) | ✅       |
 
 ---
 
-## 9. Admin (Platform-wide)
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| User Management                   | -     | ✅    | ❌          | ❌     |
-| Team Management                   | -     | ✅    | ❌          | ❌     |
-| Dataset Management                | -     | ✅    | ❌          | ❌     |
-| Model Management                  | -     | ✅    | ❌          | ❌     |
-| Community Management              | -     | ✅    | ❌          | ❌     |
-| Zenodo Publication Management     | -     | ✅    | ❌          | ❌     |
-| View System Logs                  | -     | ✅    | ❌          | ❌     |
-| Database Status                    | -     | ✅    | ❌          | ❌     |
-| Manage Resource Credits           | -     | ✅    | ❌          | ❌     |
-| View System Statistics            | -     | ✅    | ❌          | ❌     |
-| Change System Settings            | -     | ✅    | ❌          | ❌     |
+### GIS
+
+| Feature                     | Viewer                  | Contributor                | Owner                           | Admin   |
+| --------------------------- | ----------------------- | -------------------------- | ------------------------------- | ------- |
+| GIS Explorer (map view)     | ✅ (public only)         | ✅ (own/team/public layers) | ✅ (own/team layers, save/share) | ✅ (all) |
+| Dataset Visualization       | ✅ (public only)         | ✅ (own/team/public)        | ✅ (all owned)                   | ✅       |
+| Model Outputs Visualization | ✅ (public only)         | ✅ (own/team/public)        | ✅ (all owned)                   | ✅       |
+| Real-time Locale View       | ✅ (public public feeds) | ✅ (own/team/public)        | ✅ (manage feeds)                | ✅       |
 
 ---
 
-## 10. Notifications
-| Function                           | Owner | Admin | Contributor | Viewer |
-|-----------------------------------|-------|-------|-------------|--------|
-| View Real-time Alerts             | ✅    | ✅    | ✅          | ✅     |
-| Manage Subscriptions              | ✅    | ✅    | ✅          | ❌     |
-| Receive System Messages           | ✅    | ✅    | ✅          | ✅     |
+### Community
+
+| Feature                                          | Viewer   | Contributor         | Owner                 | Admin            |
+| ------------------------------------------------ | -------- | ------------------- | --------------------- | ---------------- |
+| Global Feed                                      | ✅        | ✅                   | ✅                     | ✅                |
+| Discussions (threads, replies)                   | ✅ (read) | ✅ (post/reply)      | ✅ (moderate own/team) | ✅ (moderate all) |
+| Posts (create/edit/delete, comment, like, share) | –        | ✅ (own/team/public) | ✅ (manage own/team)   | ✅ (manage all)   |
+| My Activity                                      | –        | ✅                   | ✅                     | ✅                |
+
+---
+
+### Admin
+
+| Feature                                                   | Viewer | Contributor | Owner | Admin |
+| --------------------------------------------------------- | ------ | ----------- | ----- | ----- |
+| User Management                                           | –      | –           | –     | ✅     |
+| Team Management                                           | –      | –           | –     | ✅     |
+| Dataset/Model/Project/Dashboard Management                | –      | –           | –     | ✅     |
+| Community Management                                      | –      | –           | –     | ✅     |
+| Zenodo Publication Management                             | –      | –           | –     | ✅     |
+| System Logs                                               | –      | –           | –     | ✅     |
+| Database Status                                           | –      | –           | –     | ✅     |
+| Resource Credits (auto assignment, contribution tracking) | –      | –           | –     | ✅     |
+| System Statistics                                         | –      | –           | –     | ✅     |
+| Settings (system-wide)                                    | –      | –           | –     | ✅     |
+
+---
+
+### Notifications
+
+| Feature          | Viewer     | Contributor | Owner        | Admin                |
+| ---------------- | ---------- | ----------- | ------------ | -------------------- |
+| Real-time Alerts | –          | ✅ (own)     | ✅ (own/team) | ✅ (all)              |
+| Subscriptions    | –          | ✅ (own)     | ✅ (own/team) | ✅ (all)              |
+| System Messages  | ✅ (public) | ✅           | ✅            | ✅ (create/broadcast) |
+
