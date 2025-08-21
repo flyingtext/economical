@@ -1,131 +1,119 @@
-"""Dataclasses representing core ERD entities.
+"""SQLAlchemy ORM models for core entities.
 
-These models are derived from the sitemap and ERD mapping
-at ``docs/sitemap_erd.md`` to provide a lightweight
-schema scaffold for future database integration.
+This module replaces earlier dataclass scaffolds with proper SQLAlchemy
+models aligned with the ERD described in ``docs/ERD.md``.  Only a subset of
+entities required by the application are implemented here.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+import uuid
 from datetime import datetime
-from typing import Dict, List, Optional
+
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+)
+from sqlalchemy.orm import relationship
+
+from .db import Base
 
 
-@dataclass
-class User:
-    id: int
-    name: str
-    email: str
-    affiliation: Optional[str] = None
-    role: str = "user"
-    preferences_json: Dict[str, object] = field(default_factory=dict)
-    password_hash: str = ""
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+def _uuid() -> str:
+    """Return a new UUID4 string."""
+
+    return str(uuid.uuid4())
 
 
-@dataclass
-class Team:
-    id: int
-    name: str
-    description: Optional[str] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+class Dataset(Base):
+    """Dataset information available in the catalog."""
+
+    __tablename__ = "datasets"
+
+    id = Column(String(36), primary_key=True, default=_uuid)
+    name = Column(String(255), nullable=False)
+    description = Column(String, nullable=False)
+    tags = Column(String, default="")
+    visibility = Column(String(50), default="private")
+    owner_id = Column(String(36), nullable=False)
+    owner_type = Column(String(50))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    versions = relationship(
+        "DatasetVersion", back_populates="dataset", cascade="all, delete-orphan"
+    )
+    usage = relationship(
+        "DatasetUsage", back_populates="dataset", uselist=False, cascade="all, delete-orphan"
+    )
 
 
-@dataclass
-class Dataset:
-    id: int
-    name: str
-    description: str
-    tags: List[str] = field(default_factory=list)
-    visibility: str = "private"
-    owner_id: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+class DatasetVersion(Base):
+    """Version history for datasets."""
+
+    __tablename__ = "dataset_versions"
+
+    id = Column(String(36), primary_key=True, default=_uuid)
+    dataset_id = Column(String(36), ForeignKey("datasets.id"), nullable=False)
+    version_tag = Column(String(100), nullable=False)
+    changelog = Column(String, default="")
+    origin = Column(String, default="")
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    dataset = relationship("Dataset", back_populates="versions")
 
 
-@dataclass
-class DatasetVersion:
-    dataset_id: int
-    origin: str
-    version_tag: str
-    changelog: str = ""
-    created_at: datetime = field(default_factory=datetime.utcnow)
+class DatasetUsage(Base):
+    """Usage statistics for datasets."""
+
+    __tablename__ = "dataset_usage"
+
+    id = Column(String(36), primary_key=True, default=_uuid)
+    dataset_id = Column(String(36), ForeignKey("datasets.id"), nullable=False)
+    views = Column(Integer, default=0)
+    downloads = Column(Integer, default=0)
+    api_calls = Column(Integer, default=0)
+    last_accessed = Column(DateTime)
+
+    dataset = relationship("Dataset", back_populates="usage")
 
 
-@dataclass
-class DatasetUsage:
-    dataset_id: int
-    views: int = 0
-    downloads: int = 0
-    api_calls: int = 0
-    last_accessed: Optional[datetime] = None
+class Model(Base):
+    """Machine learning or analytical model metadata."""
+
+    __tablename__ = "models"
+
+    id = Column(String(36), primary_key=True, default=_uuid)
+    name = Column(String(255), nullable=False)
+    description = Column(String, nullable=False)
+    model_type = Column(String(50), nullable=False)
+    owner_id = Column(String(36), nullable=False)
+    owner_type = Column(String(50))
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
-@dataclass
-class Model:
-    id: int
-    name: str
-    description: str
-    model_type: str
-    owner_id: int
-    created_at: datetime = field(default_factory=datetime.utcnow)
+class Notification(Base):
+    """User notification records."""
+
+    __tablename__ = "notifications"
+
+    id = Column(String(36), primary_key=True, default=_uuid)
+    user_id = Column(String(36), nullable=False)
+    message = Column(String, nullable=False)
+    type = Column(String(50), nullable=False)
+    is_read = Column(Boolean, default=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 
-@dataclass
-class Project:
-    id: int
-    name: str
-    description: str
-    owner_id: int
-    created_at: datetime = field(default_factory=datetime.utcnow)
-
-
-@dataclass
-class Dashboard:
-    id: int
-    name: str
-    description: str
-    owner_id: int
-    created_at: datetime = field(default_factory=datetime.utcnow)
-
-
-@dataclass
-class MapView:
-    id: int
-    name: str
-    description: str
-    layer_config: Dict[str, object] = field(default_factory=dict)
-
-
-@dataclass
-class Post:
-    id: int
-    content: str
-    created_at: datetime = field(default_factory=datetime.utcnow)
-
-
-@dataclass
-class Comment:
-    id: int
-    post_id: int
-    content: str
-    created_at: datetime = field(default_factory=datetime.utcnow)
-
-
-@dataclass
-class Like:
-    id: int
-    post_id: int
-    user_id: int
-    created_at: datetime = field(default_factory=datetime.utcnow)
-
-
-@dataclass
-class Notification:
-    id: int
-    message: str
-    type: str
-    is_read: bool = False
-    created_at: datetime = field(default_factory=datetime.utcnow)
+__all__ = [
+    "Dataset",
+    "DatasetVersion",
+    "DatasetUsage",
+    "Model",
+    "Notification",
+]
