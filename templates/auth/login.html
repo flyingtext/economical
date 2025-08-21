@@ -1,14 +1,85 @@
 {% extends 'base.html' %}
+{% block head %}
+  <script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
 {% block content %}
-<h1>Login</h1>
-<form method="post">
-  <label for="email">Email</label>
-  <input id="email" type="email" name="email" required>
-  <label for="password">Password</label>
-  <input id="password" type="password" name="password" required>
-  <label><input type="checkbox" name="remember"> Remember me</label>
-  <button type="submit">Log in</button>
-</form>
-<p><a href="/auth/password-reset">Forgot password?</a></p>
-<p><a href="/auth/signup">Create new account</a></p>
+<div class="flex min-h-screen items-center justify-center bg-gray-50">
+  <div class="w-full max-w-md space-y-6 rounded bg-white p-8 shadow">
+    <div class="text-center">
+      <a href="/" class="flex flex-col items-center" aria-label="Home">
+        <span class="text-2xl font-bold text-gray-900">Economical</span>
+      </a>
+    </div>
+    {% if error %}
+    <div id="errorBanner" class="rounded bg-red-100 p-3 text-red-700" role="alert" aria-live="assertive">{{ error }}</div>
+    {% else %}
+    <div id="errorBanner" class="hidden rounded bg-red-100 p-3 text-red-700" role="alert" aria-live="assertive"></div>
+    {% endif %}
+    <form id="loginForm" method="post" class="space-y-4" aria-describedby="errorBanner">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input id="email" type="email" name="email" required autocomplete="email" class="mt-1 w-full rounded border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500" />
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input id="password" type="password" name="password" required autocomplete="current-password" class="mt-1 w-full rounded border border-gray-300 p-2 focus:border-indigo-500 focus:ring-indigo-500" />
+      </div>
+      <div class="flex items-center justify-between">
+        <label for="remember" class="flex items-center text-sm text-gray-700">
+          <input id="remember" type="checkbox" name="remember" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+          <span class="ml-2">Remember me</span>
+        </label>
+        <a href="/auth/password-reset" class="text-sm text-indigo-600 hover:underline">Forgot password?</a>
+      </div>
+      <button id="submitBtn" type="submit" class="flex w-full items-center justify-center rounded bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        <svg id="spinner" class="hidden mr-2 h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        Log in
+      </button>
+    </form>
+    <p class="text-center text-sm text-gray-600">
+      No account?
+      <a href="/auth/signup" class="text-indigo-600 hover:underline">Create new account</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  const form = e.target;
+  const button = document.getElementById('submitBtn');
+  const spinner = document.getElementById('spinner');
+  const errorBanner = document.getElementById('errorBanner');
+  errorBanner.classList.add('hidden');
+  button.disabled = true;
+  spinner.classList.remove('hidden');
+  const formData = new FormData(form);
+  try {
+    const response = await fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    });
+    if (response.redirected) {
+      window.location.href = response.url;
+      return;
+    }
+    if (!response.ok) {
+      const data = await response.json();
+      errorBanner.textContent = data.error || 'Login failed';
+      errorBanner.classList.remove('hidden');
+    }
+  } catch (err) {
+    errorBanner.textContent = 'Network error';
+    errorBanner.classList.remove('hidden');
+  } finally {
+    spinner.classList.add('hidden');
+    button.disabled = false;
+  }
+});
+</script>
 {% endblock %}
