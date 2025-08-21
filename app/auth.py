@@ -37,8 +37,10 @@ def register_user_with_database(conn: pymysql.connections.Connection, user_id: i
     db_user = username
     db_password = secrets.token_urlsafe(16)
 
-    migrations_dir = Path(__file__).resolve().parent.parent / "migrations"
-    apply_migrations(conn, migrations_dir)
+    root_dir = Path(__file__).resolve().parent.parent
+    migrations_dir = root_dir / "migrations"
+    erd_path = root_dir / "docs" / "ERD.md"
+    apply_migrations(conn, migrations_dir, erd_path)
 
     with conn.cursor() as cur:
         # Create database and user
