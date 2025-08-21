@@ -45,6 +45,33 @@ CATEGORIES: Dict[str, Category] = {
             "stock price simulation": "/categories/economics#gdp-growth",
         },
     },
+    "statistics": {
+        "name": "Statistics",
+        "description": "Statistical tools and models.",
+        "deterministic_examples": ["mean", "variance"],
+        "stochastic_examples": ["monte carlo", "bootstrap"],
+        "adaptability": "High",
+        "related_categories": ["economics", "finance"],
+        "links": {},
+    },
+    "machine_learning": {
+        "name": "Machine Learning",
+        "description": "Learning algorithms for prediction and classification.",
+        "deterministic_examples": ["linear regression", "decision tree"],
+        "stochastic_examples": ["random forest", "neural network"],
+        "adaptability": "Medium",
+        "related_categories": ["statistics"],
+        "links": {},
+    },
+    "data_science": {
+        "name": "Data Science",
+        "description": "Data processing and visualization techniques.",
+        "deterministic_examples": ["ETL process", "data cleaning"],
+        "stochastic_examples": ["data sampling", "randomization"],
+        "adaptability": "Low",
+        "related_categories": ["machine_learning"],
+        "links": {},
+    },
 }
 
 
