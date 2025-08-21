@@ -162,4 +162,5 @@ We welcome contributions! Please check:
 * ✉️ Email: [somehowme@gmail.com](mailto:somehowme@gmail.com) / [flyingtext@nate.com](mailto:flyingtext@nate.com) / [flyingtext@hotmail.com](mailto:flyingtext@hotmail.com)
 * 🌐 GitHub: [flyingtext](https://github.com/flyingtext)
 * 📝 Blog: [j.writings.cloud](https://j.writings.cloud) / [k.writings.cloud](https://k.writings.cloud)
+* 🧾 ORCID: [0000-0001-9610-0994](https://orcid.org/0000-0001-9610-0994)
 
