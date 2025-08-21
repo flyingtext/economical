@@ -73,17 +73,7 @@ def remove_session(exc=None):
 def index(path: str) -> str:
     if path.startswith("api") or path.startswith("ws"):
         abort(404)
-    # Load My Account overview text from specification markdown
-    overview = ""
-    spec_path = Path("docs/specification/my_account.md")
-    try:
-        lines = spec_path.read_text(encoding="utf-8").splitlines()
-        start = lines.index("## 1. Screen Purpose") + 1
-        end = lines.index("---", start)
-        overview = " ".join(line.strip() for line in lines[start:end] if line.strip())
-    except Exception:
-        overview = ""
-
+        
     with SessionLocal() as session:
         datasets = (
             session.query(Dataset)
