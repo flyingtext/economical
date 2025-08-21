@@ -134,6 +134,19 @@ python run.py
 
 ---
 
+## ⚙️ Environment Variables
+
+Configure the application with the following environment variables:
+
+| Variable | Description | Default |
+|---------|-------------|---------|
+| `DATABASE_URL` | Database connection URI used by SQLAlchemy and Alembic. | `sqlite:///economical.db` |
+| `SECRET_KEY` | Secret key for Flask sessions. | `dev` |
+
+Set these in your shell or a `.env` file before running the server or migrations.
+
+---
+
 ## 🔗 Zenodo Community
 
 All published models and datasets are curated at:
