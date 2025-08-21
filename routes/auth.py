@@ -7,7 +7,9 @@ from flask import (
     request,
     url_for,
     jsonify,
+    session,
 )
+from datetime import datetime
 import re
 import secrets
 
@@ -15,6 +17,8 @@ import secrets
 registered_users: list[dict] = []
 # In-memory mapping of reset tokens to user emails
 reset_tokens: dict[str, str] = {}
+# Active session registry {email: [{token, ip, login_at}]}
+active_sessions: dict[str, list[dict]] = {}
 
 
 def _is_strong_password(password: str) -> bool:
@@ -42,7 +46,13 @@ def login():
         password = request.form.get("password", "")
         # Placeholder authentication logic. Accept any non-empty credentials.
         if email and password:
-            return redirect(url_for("index"))
+            session["user"] = email
+            token = secrets.token_urlsafe(16)
+            session["session_token"] = token
+            active_sessions.setdefault(email, []).append(
+                {"token": token, "ip": request.remote_addr, "login_at": datetime.utcnow()}
+            )
+            return redirect(url_for("my_account.dashboard"))
         error = "Invalid credentials"
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"error": error}), 400
@@ -75,6 +85,20 @@ def signup():
                     "email": email,
                     "password": password,
                     "contact": contact,
+                    "affiliation": "",
+                    "orcid": None,
+                    "preferences": {
+                        "language": "en",
+                        "timezone": "UTC",
+                        "theme": "light",
+                    },
+                    "notifications": {
+                        "email": True,
+                        "in_app": True,
+                    },
+                    "exports": [],
+                    "backups": [],
+                    "publications": [],
                 }
             )
             return redirect(url_for("auth.login", success="Account created. Please log in."))
