@@ -14,6 +14,25 @@ workflow for experimenting with economic time series:
 The original API for serving cached time series is still available and a
 new web form at `/model` drives the modelling pipeline.
 
+## Model Categories
+
+The modelling playground groups examples into five categories:
+
+1. **Economics** – Models and indicators related to economic trends.
+2. **Finance** – Financial modelling techniques for assets and risk.
+3. **Statistics** – General statistical tools used across domains.
+4. **Machine Learning** – Data‑driven algorithms for pattern finding and prediction.
+5. **Optimization** – Approaches for selecting best outcomes under constraints.
+
+All category metadata lives in [`routes/categories.py`](routes/categories.py)
+within the `CATEGORIES` dictionary. Each entry defines the name,
+description, example models and optional links to related topics.
+
+To add a category, extend `CATEGORIES` with a new definition following the
+existing structure. Icons for categories can be placed in
+[`static/icons/`](static/icons) (create the directory if necessary) using the
+category's slug as the filename (e.g. `finance.svg`).
+
 ## Setup
 
 1. **Install dependencies**
