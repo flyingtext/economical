@@ -18,6 +18,7 @@ from routes.community import bp as community_bp
 from routes.notifications import bp as notifications_bp
 from routes.admin import bp as admin_bp
 from services.data_ingestion import cache_series, fetch_remote_series
+from ws import init_app as init_ws, socketio
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev")
@@ -32,6 +33,8 @@ app.register_blueprint(dashboards_bp)
 app.register_blueprint(community_bp)
 app.register_blueprint(notifications_bp)
 app.register_blueprint(admin_bp)
+
+init_ws(app)
 
 load_dotenv()
 
@@ -58,4 +61,4 @@ def index() -> str:
 
 
 if __name__ == "__main__":
-    app.run()
+    socketio.run(app)
